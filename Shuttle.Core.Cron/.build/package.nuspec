@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+	<metadata>
+		<id>Shuttle.Core.Cron</id>
+		<version>{semver}</version>
+		<authors>Eben Roux</authors>
+		<owners>Eben Roux</owners>
+		<licenseUrl>https://github.com/shuttle/Shuttle.Core.Cron/raw/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/shuttle/Shuttle.Core.Cron</projectUrl>
+		<iconUrl>https://raw.githubusercontent.com/Shuttle/Shuttle.Core.Cron/master/.media/logo.png</iconUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>Cron expression parsing.</description>
+		<releaseNotes/>
+		<copyright>Copyright (c) {year}, Eben Roux</copyright>
+		<tags>shuttle cron scheduling</tags>
+    <dependencies>
+      <dependency id="Shuttle.Core.Contract" version="{Shuttle.Core.Contract-version}" />
+      <dependency id="Shuttle.Core.Specification" version="{Shuttle.Core.Specification-version}" />
+    </dependencies>
+	</metadata>
+</package>
