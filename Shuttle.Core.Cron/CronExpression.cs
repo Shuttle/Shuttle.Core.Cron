@@ -10,7 +10,7 @@ namespace Shuttle.Core.Cron
         private CronHour _cronHour;
         private CronMinute _cronMinute;
         private CronMonth _cronMonth;
-        public DateTime Crondate;
+        private DateTime _crondate;
 
         public CronExpression(string expression)
             : this(expression, DateTime.Now)
@@ -23,7 +23,7 @@ namespace Shuttle.Core.Cron
 
             Expression = expression;
 
-            Crondate = RemoveSeconds(date);
+            _crondate = RemoveSeconds(date);
 
             ParseExpression(expression);
         }
@@ -65,66 +65,66 @@ namespace Shuttle.Core.Cron
 
         public DateTime NextOccurrence()
         {
-            return NextOccurrence(Crondate);
+            return NextOccurrence(_crondate);
         }
 
         public DateTime NextOccurrence(DateTime date)
         {
-            Crondate = SnapNextOccurrence(RemoveSeconds(date.AddMinutes(1)));
+            _crondate = GetNextOccurrence(RemoveSeconds(date.AddMinutes(1)));
 
-            var validator = SnapNextOccurrence(Crondate);
+            var validator = GetNextOccurrence(_crondate);
 
-            while (validator != Crondate)
+            while (validator != _crondate)
             {
-                Crondate = validator;
-                validator = SnapNextOccurrence(Crondate);
+                _crondate = validator;
+                validator = GetNextOccurrence(_crondate);
             }
 
-            return Crondate;
+            return _crondate;
         }
 
-        private DateTime SnapNextOccurrence(DateTime date)
+        public DateTime GetNextOccurrence(DateTime date)
         {
             var result = date;
 
-            result = _cronMinute.SnapForward(result);
-            result = _cronHour.SnapForward(result);
-            result = _cronDayOfMonth.SnapForward(result);
-            result = _cronMonth.SnapForward(result);
-            result = _cronDayOfWeek.SnapForward(result);
+            result = _cronMinute.GetNext(result);
+            result = _cronHour.GetNext(result);
+            result = _cronDayOfMonth.GetNext(result);
+            result = _cronMonth.GetNext(result);
+            result = _cronDayOfWeek.GetNext(result);
 
             return result;
         }
 
         public DateTime PreviousOccurrence()
         {
-            return PreviousOccurrence(Crondate);
+            return PreviousOccurrence(_crondate);
         }
 
         public DateTime PreviousOccurrence(DateTime date)
         {
-            Crondate = SnapPreviousOccurrence(RemoveSeconds(date.AddMinutes(-1)));
+            _crondate = GetPreviousOccurrence(RemoveSeconds(date.AddMinutes(-1)));
 
-            var validator = SnapPreviousOccurrence(Crondate);
+            var validator = GetPreviousOccurrence(_crondate);
 
-            while (validator != Crondate)
+            while (validator != _crondate)
             {
-                Crondate = validator;
-                validator = SnapPreviousOccurrence(Crondate);
+                _crondate = validator;
+                validator = GetPreviousOccurrence(_crondate);
             }
 
-            return Crondate;
+            return _crondate;
         }
 
-        private DateTime SnapPreviousOccurrence(DateTime date)
+        public DateTime GetPreviousOccurrence(DateTime date)
         {
             var result = date;
 
-            result = _cronMinute.SnapBackward(result);
-            result = _cronHour.SnapBackward(result);
-            result = _cronDayOfMonth.SnapBackward(result);
-            result = _cronMonth.SnapBackward(result);
-            result = _cronDayOfWeek.SnapBackward(result);
+            result = _cronMinute.GetPrevious(result);
+            result = _cronHour.GetPrevious(result);
+            result = _cronDayOfMonth.GetPrevious(result);
+            result = _cronMonth.GetPrevious(result);
+            result = _cronDayOfWeek.GetPrevious(result);
 
             return result;
         }

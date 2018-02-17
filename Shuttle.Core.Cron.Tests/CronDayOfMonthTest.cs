@@ -15,7 +15,7 @@ namespace Shuttle.Core.Cron.Tests
 
 			for (var i = 0; i < 32; i++)
 			{
-				Assert.AreEqual(date, field.SnapForward(date));
+				Assert.AreEqual(date, field.GetNext(date));
 
 				date = date.AddDays(1);
 			}
@@ -28,7 +28,7 @@ namespace Shuttle.Core.Cron.Tests
 
 			var date = new DateTime(2011, 01, 01, 0, 0, 0);
 
-			Assert.AreEqual(date.AddDays(30), field.SnapForward(date));
+			Assert.AreEqual(date.AddDays(30), field.GetNext(date));
 		}
 
 		[Test]
@@ -38,7 +38,7 @@ namespace Shuttle.Core.Cron.Tests
 
 			var date = new DateTime(2011, 01, 01, 0, 0, 0);
 
-			Assert.AreEqual(date.AddDays(11), field.SnapForward(date));
+			Assert.AreEqual(date.AddDays(11), field.GetNext(date));
 		}
 
 		[Test]
@@ -48,7 +48,7 @@ namespace Shuttle.Core.Cron.Tests
 
 			var date = new DateTime(2011, 01, 01, 0, 0, 0);
 
-			Assert.AreEqual(date.AddDays(13), field.SnapForward(date));
+			Assert.AreEqual(date.AddDays(13), field.GetNext(date));
 		}
 
 		[Test]
@@ -58,7 +58,7 @@ namespace Shuttle.Core.Cron.Tests
 
 			var date = new DateTime(2011, 01, 01, 0, 0, 0);
 
-			Assert.AreEqual(date.AddDays(16), field.SnapForward(date));
+			Assert.AreEqual(date.AddDays(16), field.GetNext(date));
 		}
 
 		[Test]
@@ -68,7 +68,7 @@ namespace Shuttle.Core.Cron.Tests
 
 			var date = new DateTime(2011, 01, 01, 0, 0, 0);
 
-			Assert.AreEqual(date.AddDays(2), field.SnapForward(date));
+			Assert.AreEqual(date.AddDays(2), field.GetNext(date));
 		}
 
 		[Test]
@@ -78,7 +78,7 @@ namespace Shuttle.Core.Cron.Tests
 
 			var date = new DateTime(2011, 07, 01, 0, 0, 0);
 
-			Assert.AreEqual(date.AddDays(28), field.SnapForward(date));
+			Assert.AreEqual(date.AddDays(28), field.GetNext(date));
 		}
 
 		[Test]
@@ -88,7 +88,7 @@ namespace Shuttle.Core.Cron.Tests
 
 			var date = new DateTime(2011, 01, 01, 0, 0, 0);
 
-			Assert.AreEqual(date.AddDays(30), field.SnapForward(date));
+			Assert.AreEqual(date.AddDays(30), field.GetNext(date));
 		}
 
 		[Test]
@@ -97,19 +97,19 @@ namespace Shuttle.Core.Cron.Tests
 			var field = new CronDayOfMonth("5,10,15,20");
 
 			var control = new DateTime(2011, 01, 01, 0, 0, 0);
-			var date = field.SnapForward(control);
+			var date = field.GetNext(control);
 
 			Assert.AreEqual(control.AddDays(4), date);
-			date = field.SnapForward(date.AddDays(1));
+			date = field.GetNext(date.AddDays(1));
 
 			Assert.AreEqual(control.AddDays(9), date);
-			date = field.SnapForward(date.AddDays(1));
+			date = field.GetNext(date.AddDays(1));
 
 			Assert.AreEqual(control.AddDays(14), date);
-			date = field.SnapForward(date.AddDays(1));
+			date = field.GetNext(date.AddDays(1));
 
 			Assert.AreEqual(control.AddDays(19), date);
-			date = field.SnapForward(date.AddDays(1));
+			date = field.GetNext(date.AddDays(1));
 
 			Assert.AreEqual(control.AddDays(35), date);
 		}
@@ -120,22 +120,22 @@ namespace Shuttle.Core.Cron.Tests
 			var field = new CronDayOfMonth("5-10");
 
 			var control = new DateTime(2011, 01, 01, 0, 0, 0);
-			var date = field.SnapForward(control);
+			var date = field.GetNext(control);
 
 			Assert.AreEqual(control.AddDays(4), date);
-			date = field.SnapForward(date.AddDays(1));
+			date = field.GetNext(date.AddDays(1));
 
 			Assert.AreEqual(control.AddDays(5), date);
-			date = field.SnapForward(date.AddDays(1));
+			date = field.GetNext(date.AddDays(1));
 
 			Assert.AreEqual(control.AddDays(6), date);
-			date = field.SnapForward(date.AddDays(1));
+			date = field.GetNext(date.AddDays(1));
 
 			Assert.AreEqual(control.AddDays(7), date);
-			date = field.SnapForward(date.AddDays(1));
+			date = field.GetNext(date.AddDays(1));
 
 			Assert.AreEqual(control.AddDays(8), date);
-			date = field.SnapForward(date.AddDays(1));
+			date = field.GetNext(date.AddDays(1));
 
 			Assert.AreEqual(control.AddDays(9), date);
 		}
@@ -146,13 +146,13 @@ namespace Shuttle.Core.Cron.Tests
 			var field = new CronDayOfMonth("5-10/5");
 
 			var control = new DateTime(2011, 01, 01, 0, 0, 0);
-			var date = field.SnapForward(control);
+			var date = field.GetNext(control);
 
 			Assert.AreEqual(control.AddDays(4), date);
-			date = field.SnapForward(date.AddDays(1));
+			date = field.GetNext(date.AddDays(1));
 
 			Assert.AreEqual(control.AddDays(9), date);
-			date = field.SnapForward(date.AddDays(1));
+			date = field.GetNext(date.AddDays(1));
 
 			Assert.AreEqual(control.AddDays(35), date);
 		}

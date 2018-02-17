@@ -51,12 +51,12 @@ namespace Shuttle.Core.Cron
             DefaultParsing(1, 31);
         }
 
-        public override DateTime SnapForward(DateTime date)
+        public override DateTime GetNext(DateTime date)
         {
             return Snap(date, 1);
         }
 
-        public override DateTime SnapBackward(DateTime date)
+        public override DateTime GetPrevious(DateTime date)
         {
             return Snap(date, -1);
         }

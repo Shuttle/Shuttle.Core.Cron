@@ -9,7 +9,7 @@ namespace Shuttle.Core.Cron
 			DefaultParsing(0, 59);
 		}
 
-		public override DateTime SnapForward(DateTime date)
+		public override DateTime GetNext(DateTime date)
 		{
 			while (!IsSatisfiedBy(date.Minute))
 			{
@@ -19,7 +19,7 @@ namespace Shuttle.Core.Cron
 			return date;
 		}
 
-		public override DateTime SnapBackward(DateTime date)
+		public override DateTime GetPrevious(DateTime date)
 		{
 			while (!IsSatisfiedBy(date.Minute))
 			{

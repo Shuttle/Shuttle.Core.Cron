@@ -6,6 +6,41 @@ PM> Install-Package Shuttle.Core.Cron
 
 Provides [cron](https://en.wikipedia.org/wiki/Cron) expression parsing.
 
+## CronExpression
+
+``` c#
+public CronExpression(string expression) : this(expression, DateTime.Now)
+public CronExpression(string expression, DateTime date)
+```
+
+Creates a `CronExpression` instance and parses the given `expression`.  The `date` specifies to root date from which to determine either the next or previous occurrence.
+
+``` c#
+public DateTime NextOccurrence()
+public DateTime NextOccurrence(DateTime date)
+```
+
+Returns the next date that would follow the given `date`.  If no date is provided the root date will be used.  This method also sets the root date to the result.
+
+``` c#
+public DateTime GetNextOccurrence(DateTime date)
+```
+
+Returns the next date that would follow the given `date`.
+
+``` c#
+public DateTime PreviousOccurrence()
+public DateTime PreviousOccurrence(DateTime date)
+```
+
+Returns the previous date that would precede the given `date`.  If no date is provided the root date will be used.  This method also sets the root date to the result.
+
+``` c#
+public DateTime GetPreviousOccurrence(DateTime date)
+```
+
+Returns the previous date that would precede the given `date`.
+
 ## Cron Samples
 
 Format is {minute} {hour} {day-of-month} {month} {day-of-week}

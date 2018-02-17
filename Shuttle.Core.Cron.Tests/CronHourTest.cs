@@ -15,7 +15,7 @@ namespace Shuttle.Core.Cron.Tests
 
 			for (var i = 0; i < 24; i++)
 			{
-				Assert.AreEqual(date, field.SnapForward(date));
+				Assert.AreEqual(date, field.GetNext(date));
 
 				date = date.AddHours(1);
 			}
@@ -27,19 +27,19 @@ namespace Shuttle.Core.Cron.Tests
 			var field = new CronHour("5,10,15,20");
 
 			var control = new DateTime(2011, 01, 01, 0, 0, 0);
-			var date = field.SnapForward(control);
+			var date = field.GetNext(control);
 
 			Assert.AreEqual(control.AddHours(5), date);
-			date = field.SnapForward(date.AddHours(1));
+			date = field.GetNext(date.AddHours(1));
 
 			Assert.AreEqual(control.AddHours(10), date);
-			date = field.SnapForward(date.AddHours(1));
+			date = field.GetNext(date.AddHours(1));
 
 			Assert.AreEqual(control.AddHours(15), date);
-			date = field.SnapForward(date.AddHours(1));
+			date = field.GetNext(date.AddHours(1));
 
 			Assert.AreEqual(control.AddHours(20), date);
-			date = field.SnapForward(date.AddHours(1));
+			date = field.GetNext(date.AddHours(1));
 
 			Assert.AreEqual(control.AddHours(29), date);
 		}
@@ -50,22 +50,22 @@ namespace Shuttle.Core.Cron.Tests
 			var field = new CronHour("5-10");
 
 			var control = new DateTime(2011, 01, 01, 0, 0, 0);
-			var date = field.SnapForward(control);
+			var date = field.GetNext(control);
 
 			Assert.AreEqual(control.AddHours(5), date);
-			date = field.SnapForward(date.AddHours(1));
+			date = field.GetNext(date.AddHours(1));
 
 			Assert.AreEqual(control.AddHours(6), date);
-			date = field.SnapForward(date.AddHours(1));
+			date = field.GetNext(date.AddHours(1));
 
 			Assert.AreEqual(control.AddHours(7), date);
-			date = field.SnapForward(date.AddHours(1));
+			date = field.GetNext(date.AddHours(1));
 
 			Assert.AreEqual(control.AddHours(8), date);
-			date = field.SnapForward(date.AddHours(1));
+			date = field.GetNext(date.AddHours(1));
 
 			Assert.AreEqual(control.AddHours(9), date);
-			date = field.SnapForward(date.AddHours(1));
+			date = field.GetNext(date.AddHours(1));
 
 			Assert.AreEqual(control.AddHours(10), date);
 		}
@@ -76,13 +76,13 @@ namespace Shuttle.Core.Cron.Tests
 			var field = new CronHour("5-10/5");
 
 			var control = new DateTime(2011, 01, 01, 0, 0, 0);
-			var date = field.SnapForward(control);
+			var date = field.GetNext(control);
 
 			Assert.AreEqual(control.AddHours(5), date);
-			date = field.SnapForward(date.AddHours(1));
+			date = field.GetNext(date.AddHours(1));
 
 			Assert.AreEqual(control.AddHours(10), date);
-			date = field.SnapForward(date.AddHours(1));
+			date = field.GetNext(date.AddHours(1));
 
 			Assert.AreEqual(control.AddHours(29), date);
 		}

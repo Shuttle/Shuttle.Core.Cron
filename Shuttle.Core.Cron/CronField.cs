@@ -44,8 +44,8 @@ namespace Shuttle.Core.Cron
             return !_specifications.Any() || _specifications.Any(specification => specification.IsSatisfiedBy(item));
         }
 
-        public abstract DateTime SnapForward(DateTime date);
-        public abstract DateTime SnapBackward(DateTime date);
+        public abstract DateTime GetNext(DateTime date);
+        public abstract DateTime GetPrevious(DateTime date);
 
         protected string[] SplitValue()
         {
