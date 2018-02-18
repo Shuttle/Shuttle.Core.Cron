@@ -11,6 +11,7 @@ namespace Shuttle.Core.Cron
         private CronMinute _cronMinute;
         private CronMonth _cronMonth;
         private DateTime _crondate;
+        private readonly long _minuteTicks = TimeSpan.FromMinutes(1).Ticks;
 
         public CronExpression(string expression)
             : this(expression, DateTime.Now)
@@ -23,16 +24,16 @@ namespace Shuttle.Core.Cron
 
             Expression = expression;
 
-            _crondate = RemoveSeconds(date);
+            _crondate = Truncate(date);
 
             ParseExpression(expression);
         }
 
         public string Expression { get; }
 
-        private static DateTime RemoveSeconds(DateTime date)
+        private DateTime Truncate(DateTime dateTime)
         {
-            return date.AddSeconds(date.Second * -1);
+            return dateTime.AddTicks(-(dateTime.Ticks % _minuteTicks));
         }
 
         private void ParseExpression(string expression)
@@ -70,7 +71,7 @@ namespace Shuttle.Core.Cron
 
         public DateTime NextOccurrence(DateTime date)
         {
-            _crondate = GetNextOccurrence(RemoveSeconds(date.AddMinutes(1)));
+            _crondate = GetNextOccurrence(Truncate(date.AddMinutes(1)));
 
             var validator = GetNextOccurrence(_crondate);
 
@@ -103,7 +104,7 @@ namespace Shuttle.Core.Cron
 
         public DateTime PreviousOccurrence(DateTime date)
         {
-            _crondate = GetPreviousOccurrence(RemoveSeconds(date.AddMinutes(-1)));
+            _crondate = GetPreviousOccurrence(Truncate(date.AddMinutes(-1)));
 
             var validator = GetPreviousOccurrence(_crondate);
 
