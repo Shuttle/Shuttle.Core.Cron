@@ -1,10 +1,12 @@
+ray
+nee
 # Shuttle.Core.Cron
 
 ```
 PM> Install-Package Shuttle.Core.Cron
 ```
 
-Provides [cron](https://en.wikipedia.org/wiki/Cron) expression parsing.
+Provides [cron](https://en.wikipedia.org/wiki/Cron) expression parsing.  This implementation starts from the `minute` field (so no `second`).
 
 ## CronExpression
 
