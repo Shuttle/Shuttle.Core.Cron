@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package >
+<package>
 	<metadata>
 		<id>Shuttle.Core.Cron</id>
 		<version>{semver}</version>
@@ -8,14 +8,15 @@
 		<licenseUrl>https://github.com/shuttle/Shuttle.Core.Cron/raw/master/LICENSE</licenseUrl>
 		<projectUrl>https://github.com/shuttle/Shuttle.Core.Cron</projectUrl>
 		<iconUrl>https://raw.githubusercontent.com/Shuttle/Shuttle.Core.Cron/master/.media/logo.png</iconUrl>
+		<repository type="git" url="https://github.com/Shuttle/Shuttle.Core.Cron.git" />
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>Cron expression parsing.</description>
 		<releaseNotes/>
 		<copyright>Copyright (c) {year}, Eben Roux</copyright>
 		<tags>shuttle cron scheduling</tags>
-    <dependencies>
-      <dependency id="Shuttle.Core.Contract" version="{Shuttle.Core.Contract-version}" />
-      <dependency id="Shuttle.Core.Specification" version="{Shuttle.Core.Specification-version}" />
-    </dependencies>
+		<dependencies>
+			<dependency id="Shuttle.Core.Contract" version="{Shuttle.Core.Contract-version}" />
+			<dependency id="Shuttle.Core.Specification" version="{Shuttle.Core.Specification-version}" />
+		</dependencies>
 	</metadata>
 </package>
