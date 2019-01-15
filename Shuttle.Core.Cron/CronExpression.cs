@@ -5,13 +5,12 @@ namespace Shuttle.Core.Cron
 {
     public class CronExpression
     {
+        public DateTime CurrentDate { get; private set; }
         private CronDayOfMonth _cronDayOfMonth;
         private CronDayOfWeek _cronDayOfWeek;
         private CronHour _cronHour;
         private CronMinute _cronMinute;
         private CronMonth _cronMonth;
-        private DateTime _crondate;
-        private readonly long _minuteTicks = TimeSpan.FromMinutes(1).Ticks;
 
         public CronExpression(string expression)
             : this(expression, DateTime.Now)
@@ -24,7 +23,7 @@ namespace Shuttle.Core.Cron
 
             Expression = expression;
 
-            _crondate = Truncate(date);
+            CurrentDate = Truncate(date);
 
             ParseExpression(expression);
         }
@@ -33,7 +32,7 @@ namespace Shuttle.Core.Cron
 
         private DateTime Truncate(DateTime dateTime)
         {
-            return dateTime.AddTicks(-(dateTime.Ticks % _minuteTicks));
+            return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, 0);
         }
 
         private void ParseExpression(string expression)
@@ -66,32 +65,35 @@ namespace Shuttle.Core.Cron
 
         public DateTime NextOccurrence()
         {
-            return NextOccurrence(_crondate);
+            return NextOccurrence(CurrentDate);
         }
 
         public DateTime NextOccurrence(DateTime date)
         {
-            _crondate = GetNextOccurrence(Truncate(date.AddMinutes(1)));
+            CurrentDate = GetNextOccurrence(date);
 
-            var validator = GetNextOccurrence(_crondate);
-
-            while (validator != _crondate)
-            {
-                _crondate = validator;
-                validator = GetNextOccurrence(_crondate);
-            }
-
-            return _crondate;
+            return CurrentDate;
         }
 
         public DateTime GetNextOccurrence(DateTime date)
         {
-            var result = date;
+            var result = Truncate(date.AddMinutes(1));
 
             result = _cronMinute.GetNext(result);
             result = _cronHour.GetNext(result);
-            result = _cronDayOfMonth.GetNext(result);
+
+            if (_cronDayOfMonth.ExpressionType != ExpressionType.LastDayOfMonth)
+            {
+                result = _cronDayOfMonth.GetNext(result);
+            }
+
             result = _cronMonth.GetNext(result);
+
+            if (_cronDayOfMonth.ExpressionType == ExpressionType.LastDayOfMonth)
+            {
+                result = _cronDayOfMonth.GetNext(result);
+            }
+
             result = _cronDayOfWeek.GetNext(result);
 
             return result;
@@ -99,27 +101,19 @@ namespace Shuttle.Core.Cron
 
         public DateTime PreviousOccurrence()
         {
-            return PreviousOccurrence(_crondate);
+            return PreviousOccurrence(CurrentDate);
         }
 
         public DateTime PreviousOccurrence(DateTime date)
         {
-            _crondate = GetPreviousOccurrence(Truncate(date.AddMinutes(-1)));
+            CurrentDate = GetPreviousOccurrence(date);
 
-            var validator = GetPreviousOccurrence(_crondate);
-
-            while (validator != _crondate)
-            {
-                _crondate = validator;
-                validator = GetPreviousOccurrence(_crondate);
-            }
-
-            return _crondate;
+            return CurrentDate;
         }
 
         public DateTime GetPreviousOccurrence(DateTime date)
         {
-            var result = date;
+            var result = Truncate(date.AddMinutes(-1));
 
             result = _cronMinute.GetPrevious(result);
             result = _cronHour.GetPrevious(result);
