@@ -3,12 +3,12 @@
     public class SpecificationParameters
     {
         public FieldName FieldName { get; }
-        public string Value { get; }
+        public string Expression { get; }
 
-        public SpecificationParameters(FieldName fieldName, string value)
+        public SpecificationParameters(FieldName fieldName, string expression)
         {
             FieldName = fieldName;
-            Value = value;
+            Expression = expression;
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Shuttle.Core.Cron
             if (_creator == null)
             {
                 throw new CronException(string.Format(Resources.InvalidDefaultSpecificationFactoryConfiguration,
-                    parameters.Value, parameters.FieldName));
+                    parameters.Expression, parameters.FieldName));
             }
 
             return _creator.Invoke(parameters);

@@ -66,7 +66,7 @@ You may pass an implementation of the `ISpecificationFactory` as a parameter to 
 ``` c#
 var factory = new DefaultSpecificationFactory(parameters =>
 {
-    return !parameters.Value.Equals("H", StringComparison.InvariantCultureIgnoreCase) 
+    return !parameters.Expression.Equals("H", StringComparison.InvariantCultureIgnoreCase) 
         ? null 
         : new Specification<CronField.Candidate>(candidate => candidate.Date.Day % 2 == 0);
 });
