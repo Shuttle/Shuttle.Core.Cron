@@ -34,7 +34,7 @@ using System.Runtime.InteropServices;
 #endif
 
 [assembly: AssemblyVersion("10.0.5.0")]
-[assembly: AssemblyCopyright("Copyright © Eben Roux 2018")]
+[assembly: AssemblyCopyright("Copyright © Eben Roux 2019")]
 [assembly: AssemblyProduct("Shuttle.Core.Cron")]
 [assembly: AssemblyCompany("Shuttle")]
 [assembly: AssemblyConfiguration("Release")]

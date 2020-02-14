@@ -4,19 +4,13 @@ using Shuttle.Core.Specification;
 
 namespace Shuttle.Core.Cron
 {
-    public class LastDayOfMonthSpecification : ISpecification<object>
+    public class LastDayOfMonthSpecification : ISpecification<CronField.Candidate>
     {
-        public bool IsSatisfiedBy(object item)
+        public bool IsSatisfiedBy(CronField.Candidate item)
         {
             Guard.AgainstNull(item, nameof(item));
 
-            if (item is DateTime date)
-            {
-                return date.Day == DateTime.DaysInMonth(date.Year, date.Month);
-            }
-
-            throw new CronException(string.Format(Resources.CronInvalidSpecificationCandidate, typeof(int).FullName,
-                item.GetType().FullName));
+            return item.Date.Day == DateTime.DaysInMonth(item.Date.Year, item.Date.Month);
         }
     }
 }

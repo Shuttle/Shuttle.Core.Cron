@@ -19,7 +19,7 @@ namespace Shuttle.Core.Cron {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -106,6 +106,15 @@ namespace Shuttle.Core.Cron {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unknown field name value &apos;{0}&apos; received..
+        /// </summary>
+        public static string CronInvalidFieldNameExcaption {
+            get {
+                return ResourceManager.GetString("CronInvalidFieldNameExcaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specification expected candidate of type &apos;{0}&apos; but was &apos;{1}&apos;..
         /// </summary>
         public static string CronInvalidSpecificationCandidate {
@@ -147,6 +156,24 @@ namespace Shuttle.Core.Cron {
         public static string CronStartValueTooSmall {
             get {
                 return ResourceManager.GetString("CronStartValueTooSmall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failure to resolve value &apos;{0}&apos; for field &apos;{1}&apos; as no `creator` function has been specified in the constructor..
+        /// </summary>
+        public static string InvalidDefaultSpecificationFactoryConfiguration {
+            get {
+                return ResourceManager.GetString("InvalidDefaultSpecificationFactoryConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The registered specification factory did not return a specification for value &apos;{0}&apos; of field &apos;{1}&apos;..
+        /// </summary>
+        public static string NullSpecificationFromFactory {
+            get {
+                return ResourceManager.GetString("NullSpecificationFromFactory", resourceCulture);
             }
         }
     }

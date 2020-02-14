@@ -8,7 +8,7 @@ namespace Shuttle.Core.Cron
         private static readonly Regex MonthExpression = new Regex("jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec",
             RegexOptions.IgnoreCase);
 
-        public CronMonth(string value)
+        public CronMonth(string value, ISpecificationFactory specificationFactory = null)
             : base(MonthExpression.Replace(value,
                 match =>
                 {
@@ -63,14 +63,14 @@ namespace Shuttle.Core.Cron
                             return "12";
                         }
                     }
-                }))
+                }), specificationFactory)
         {
-            DefaultParsing(1, 12);
+            DefaultParsing(FieldName.Month, 1, 12);
         }
 
         public override DateTime GetNext(DateTime date)
         {
-            while (!IsSatisfiedBy(date.Month))
+            while (!IsSatisfiedBy(new Candidate(FieldName.Month, Expression, date)))
             {
                 date = date.AddMonths(1);
             }
@@ -80,7 +80,7 @@ namespace Shuttle.Core.Cron
 
         public override DateTime GetPrevious(DateTime date)
         {
-            while (!IsSatisfiedBy(date.Month))
+            while (!IsSatisfiedBy(new Candidate(FieldName.Month, Expression, date)))
             {
                 date = date.AddMonths(-1);
             }

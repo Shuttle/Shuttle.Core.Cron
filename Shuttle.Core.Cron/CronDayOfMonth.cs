@@ -7,10 +7,10 @@ namespace Shuttle.Core.Cron
     {
         private readonly Regex _weekdayExpression = new Regex(@"^(?<day>\d+)W$", RegexOptions.IgnoreCase);
 
-        public CronDayOfMonth(string value)
-            : base(value)
+        public CronDayOfMonth(string expression, ISpecificationFactory specificationFactory = null)
+            : base(expression, specificationFactory)
         {
-            switch (value.ToLower())
+            switch (expression.ToLower())
             {
                 case "?":
                 {
@@ -37,7 +37,7 @@ namespace Shuttle.Core.Cron
                 }
             }
 
-            var match = _weekdayExpression.Match(value);
+            var match = _weekdayExpression.Match(expression);
 
             if (match.Success)
             {
@@ -48,7 +48,7 @@ namespace Shuttle.Core.Cron
                 return;
             }
 
-            DefaultParsing(1, 31);
+            DefaultParsing(FieldName.DayOfMonth, 1, 31);
         }
 
         public override DateTime GetNext(DateTime date)
@@ -71,7 +71,7 @@ namespace Shuttle.Core.Cron
                 }
                 case ExpressionType.NearestWeekDay:
                 {
-                    while (!IsSatisfiedBy(date.Day))
+                    while (!IsSatisfiedBy(new Candidate(FieldName.DayOfMonth, Expression, date)))
                     {
                         date = date.AddDays(delta);
                     }
@@ -112,19 +112,9 @@ namespace Shuttle.Core.Cron
 
                     break;
                 }
-                case ExpressionType.LastDayOfMonth:
-                case ExpressionType.LastWeekDayOfMonth:
-                {
-                    while (!IsSatisfiedBy(date))
-                    {
-                        date = date.AddDays(delta);
-                    }
-
-                    break;
-                }
                 default:
                 {
-                    while (!IsSatisfiedBy(date.Day))
+                    while (!IsSatisfiedBy(new Candidate(FieldName.DayOfMonth, Expression, date)))
                     {
                         date = date.AddDays(delta);
                     }

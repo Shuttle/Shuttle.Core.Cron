@@ -4,14 +4,14 @@ namespace Shuttle.Core.Cron
 {
 	public class CronMinute : CronField
 	{
-		public CronMinute(string value) : base(value)
+		public CronMinute(string expression, ISpecificationFactory specificationFactory = null) : base(expression, specificationFactory)
 		{
-			DefaultParsing(0, 59);
+			DefaultParsing(FieldName.Minute, 0, 59);
 		}
 
 		public override DateTime GetNext(DateTime date)
 		{
-			while (!IsSatisfiedBy(date.Minute))
+			while (!IsSatisfiedBy(new Candidate(FieldName.Minute, Expression, date)))
 			{
 				date = date.AddMinutes(1);
 			}
@@ -21,7 +21,7 @@ namespace Shuttle.Core.Cron
 
 		public override DateTime GetPrevious(DateTime date)
 		{
-			while (!IsSatisfiedBy(date.Minute))
+			while (!IsSatisfiedBy(new Candidate(FieldName.Minute, Expression, date)))
 			{
 				date = date.AddMinutes(-1);
 			}

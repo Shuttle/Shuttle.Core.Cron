@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CronBothDaysSpecified" xml:space="preserve">
     <value>Cron expression '{0}' is invalid since you cannot specify both day-of-month and day-of-week.  Specify one of the two as '?'.</value>
@@ -137,6 +137,10 @@
     <value>A CronExpression must contain exactly 5 fields.  {0} fields have specified.</value>
     <comment>{0} = number of fields specified</comment>
   </data>
+  <data name="CronInvalidFieldNameExcaption" xml:space="preserve">
+    <value>Unknown field name value '{0}' received.</value>
+    <comment>{0} = field name value</comment>
+  </data>
   <data name="CronInvalidSpecificationCandidate" xml:space="preserve">
     <value>Specification expected candidate of type '{0}' but was '{1}'.</value>
     <comment>{0} = expected type full name, {1} = actual type full name</comment>
@@ -155,5 +159,13 @@
   <data name="CronStartValueTooSmall" xml:space="preserve">
     <value>Start value '{0}' is lower than the minimum permitted value of '{1}'.</value>
     <comment>{0} = start value, {1} = minimum</comment>
+  </data>
+  <data name="InvalidDefaultSpecificationFactoryConfiguration" xml:space="preserve">
+    <value>Failure to resolve value '{0}' for field '{1}' as no `creator` function has been specified in the constructor.</value>
+    <comment>{0} = value to result, {1} = field name</comment>
+  </data>
+  <data name="NullSpecificationFromFactory" xml:space="preserve">
+    <value>The registered specification factory did not return a specification for value '{0}' of field '{1}'.</value>
+    <comment>{0} = value to result, {1} = field name</comment>
   </data>
 </root>

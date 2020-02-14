@@ -5,14 +5,14 @@ namespace Shuttle.Core.Cron
 {
     public class CronDayOfWeek : CronField
     {
-        private static readonly Regex MonthExpression = new Regex("sun|mon|tue|wed|thu|fri|sat|^l$",
+        private static readonly Regex NameExpression = new Regex("sun|mon|tue|wed|thu|fri|sat|^l$",
             RegexOptions.IgnoreCase);
 
-        private readonly Regex _weekdayOccurrenceExpression = new Regex(@"^(?<day>\d)\#(?<occurrence>\d)$",
+        private static readonly Regex OccurrenceExpression = new Regex(@"^(?<day>\d)\#(?<occurrence>\d)$",
             RegexOptions.IgnoreCase);
 
-        public CronDayOfWeek(string value)
-            : base(MonthExpression.Replace(value,
+        public CronDayOfWeek(string value, ISpecificationFactory specificationFactory = null)
+            : base(NameExpression.Replace(value,
                 match =>
                 {
                     switch (match.Value.ToLower())
@@ -46,20 +46,17 @@ namespace Shuttle.Core.Cron
                             return "7";
                         }
                     }
-                }))
+                }), specificationFactory)
         {
-            switch (value.ToLower())
+            if (value.Equals("?"))
             {
-                case "?":
-                {
-                    ExpressionType = ExpressionType.Skipped;
+                ExpressionType = ExpressionType.Skipped;
 
-                    // will be determined by day-of-week field
-                    return;
-                }
+                // will be determined by day-of-week field
+                return;
             }
 
-            var match = _weekdayOccurrenceExpression.Match(value);
+            var match = OccurrenceExpression.Match(value);
 
             if (match.Success)
             {
@@ -71,7 +68,7 @@ namespace Shuttle.Core.Cron
                 return;
             }
 
-            DefaultParsing(1, 7);
+            DefaultParsing(FieldName.DayOfWeek, 1, 7);
         }
 
         public override DateTime GetNext(DateTime date)
@@ -92,18 +89,9 @@ namespace Shuttle.Core.Cron
                 {
                     return date;
                 }
-                case ExpressionType.WeekDayOccurrence:
-                {
-                    while (!IsSatisfiedBy(date))
-                    {
-                        date = date.AddDays(delta);
-                    }
-
-                    break;
-                }
                 default:
                 {
-                    while (!IsSatisfiedBy((int) date.DayOfWeek + 1))
+                    while (!IsSatisfiedBy(new Candidate(FieldName.DayOfWeek, Expression, date)))
                     {
                         date = date.AddDays(delta);
                     }

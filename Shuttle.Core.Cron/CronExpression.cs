@@ -3,28 +3,39 @@ using Shuttle.Core.Contract;
 
 namespace Shuttle.Core.Cron
 {
+    public enum FieldName
+    {
+        Minute = 0,
+        Hour = 1,
+        DayOfMonth = 2,
+        Month = 3,
+        DayOfWeek = 4
+    }
+
     public class CronExpression
     {
+        private readonly ISpecificationFactory _specificationFactory;
+        private readonly long _minuteTicks = TimeSpan.FromMinutes(1).Ticks;
+        private DateTime _cronDate;
         private CronDayOfMonth _cronDayOfMonth;
         private CronDayOfWeek _cronDayOfWeek;
         private CronHour _cronHour;
         private CronMinute _cronMinute;
         private CronMonth _cronMonth;
-        private DateTime _crondate;
-        private readonly long _minuteTicks = TimeSpan.FromMinutes(1).Ticks;
 
-        public CronExpression(string expression)
-            : this(expression, DateTime.Now)
+        public CronExpression(string expression, ISpecificationFactory specificationFactory = null)
+            : this(expression, DateTime.Now, specificationFactory)
         {
         }
 
-        public CronExpression(string expression, DateTime date)
+        public CronExpression(string expression, DateTime date, ISpecificationFactory specificationFactory = null)
         {
             Guard.AgainstNullOrEmptyString(expression, nameof(expression));
 
             Expression = expression;
 
-            _crondate = Truncate(date);
+            _cronDate = Truncate(date);
+            _specificationFactory = specificationFactory ?? new DefaultSpecificationFactory();
 
             ParseExpression(expression);
         }
@@ -44,11 +55,11 @@ namespace Shuttle.Core.Cron
 
             Guard.Against<CronException>(length != 5, string.Format(Resources.CronInvalidFieldCount, length));
 
-            _cronMinute = new CronMinute(values[0]);
-            _cronHour = new CronHour(values[1]);
-            _cronDayOfMonth = new CronDayOfMonth(values[2]);
-            _cronMonth = new CronMonth(values[3]);
-            _cronDayOfWeek = new CronDayOfWeek(values[4]);
+            _cronMinute = new CronMinute(values[0], _specificationFactory);
+            _cronHour = new CronHour(values[1], _specificationFactory);
+            _cronDayOfMonth = new CronDayOfMonth(values[2], _specificationFactory);
+            _cronMonth = new CronMonth(values[3], _specificationFactory);
+            _cronDayOfWeek = new CronDayOfWeek(values[4], _specificationFactory);
 
             Guard.Against<CronException>(_cronDayOfMonth.ExpressionType == ExpressionType.Skipped
                                          &&
@@ -66,22 +77,22 @@ namespace Shuttle.Core.Cron
 
         public DateTime NextOccurrence()
         {
-            return NextOccurrence(_crondate);
+            return NextOccurrence(_cronDate);
         }
 
         public DateTime NextOccurrence(DateTime date)
         {
-            _crondate = GetNextOccurrence(Truncate(date.AddMinutes(1)));
+            _cronDate = GetNextOccurrence(Truncate(date.AddMinutes(1)));
 
-            var validator = GetNextOccurrence(_crondate);
+            var validator = GetNextOccurrence(_cronDate);
 
-            while (validator != _crondate)
+            while (validator != _cronDate)
             {
-                _crondate = validator;
-                validator = GetNextOccurrence(_crondate);
+                _cronDate = validator;
+                validator = GetNextOccurrence(_cronDate);
             }
 
-            return _crondate;
+            return _cronDate;
         }
 
         public DateTime GetNextOccurrence(DateTime date)
@@ -99,22 +110,22 @@ namespace Shuttle.Core.Cron
 
         public DateTime PreviousOccurrence()
         {
-            return PreviousOccurrence(_crondate);
+            return PreviousOccurrence(_cronDate);
         }
 
         public DateTime PreviousOccurrence(DateTime date)
         {
-            _crondate = GetPreviousOccurrence(Truncate(date.AddMinutes(-1)));
+            _cronDate = GetPreviousOccurrence(Truncate(date.AddMinutes(-1)));
 
-            var validator = GetPreviousOccurrence(_crondate);
+            var validator = GetPreviousOccurrence(_cronDate);
 
-            while (validator != _crondate)
+            while (validator != _cronDate)
             {
-                _crondate = validator;
-                validator = GetPreviousOccurrence(_crondate);
+                _cronDate = validator;
+                validator = GetPreviousOccurrence(_cronDate);
             }
 
-            return _crondate;
+            return _cronDate;
         }
 
         public DateTime GetPreviousOccurrence(DateTime date)
