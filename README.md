@@ -1,5 +1,3 @@
-ray
-nee
 # Shuttle.Core.Cron
 
 ```
