@@ -11,8 +11,8 @@ Provides [cron](https://en.wikipedia.org/wiki/Cron) expression parsing.  This im
 ## CronExpression
 
 ``` c#
-public CronExpression(string expression) : this(expression, DateTime.Now)
-public CronExpression(string expression, DateTime date)
+public CronExpression(string expression, ISpecificationFactory specificationFactory = null) : this(expression, DateTime.Now, specificationFactory)
+public CronExpression(string expression, DateTime date, ISpecificationFactory specificationFactory = null)
 ```
 
 Creates a `CronExpression` instance and parses the given `expression`.  The `date` specifies to root date from which to determine either the next or previous occurrence.
@@ -59,3 +59,17 @@ Examples:
 5,10-12,17/5 * * * * - minute 5, 10, 11, 12, and every 5th minute after that
 ```
 
+## Specifications
+
+Specifications need to implementation `ISpecification<CronField.Candidate>`.
+
+You may pass an implementation of the `ISpecificationFactory` as a parameter to the `CronExpression`.  There is a `DefaultSpecificationFactory` that accepts a function callback in the constructor for scenarios where an explicit `ISpecificationFactory` implementation may not be warranted, e.g.:
+
+``` c#
+var factory = new DefaultSpecificationFactory(parameters =>
+{
+    return !parameters.Value.Equals("H", StringComparison.InvariantCultureIgnoreCase) 
+        ? null 
+        : new Specification<CronField.Candidate>(candidate => candidate.Date.Day % 2 == 0);
+});
+```
