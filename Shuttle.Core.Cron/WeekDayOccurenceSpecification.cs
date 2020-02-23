@@ -1,10 +1,9 @@
-using System;
 using Shuttle.Core.Contract;
 using Shuttle.Core.Specification;
 
 namespace Shuttle.Core.Cron
 {
-    public class WeekDayOccurenceSpecification : ISpecification<object>
+    public class WeekDayOccurenceSpecification : ISpecification<CronField.Candidate>
     {
         private readonly int _occurrence;
         private readonly int _weekDay;
@@ -15,20 +14,11 @@ namespace Shuttle.Core.Cron
             _occurrence = occurrence;
         }
 
-        public bool IsSatisfiedBy(object item)
+        public bool IsSatisfiedBy(CronField.Candidate item)
         {
             Guard.AgainstNull(item, nameof(item));
 
-            if (!(item is DateTime date))
-            {
-                throw new CronException(string.Format(Resources.CronInvalidSpecificationCandidate,
-                    typeof(int).FullName, item.GetType().FullName));
-            }
-
-            var day = (int) date.DayOfWeek + 1;
-
-            return day == _weekDay && _occurrence == date.Day / 7 + 1;
-
+            return (int) item.Date.DayOfWeek + 1 == _weekDay && _occurrence == item.Date.Day / 7 + 1;
         }
     }
 }

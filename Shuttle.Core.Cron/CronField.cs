@@ -20,26 +20,29 @@ namespace Shuttle.Core.Cron
         Skipped
     }
 
-    public abstract class CronField : ISpecification<object>
+    public abstract class CronField : ISpecification<CronField.Candidate>
     {
+        private readonly ISpecificationFactory _specificationFactory;
+
+        private readonly List<ISpecification<Candidate>> _specifications = new List<ISpecification<Candidate>>();
+
         protected readonly Regex RangeExpression =
             new Regex(
                 @"^(?<start>\d+)-(?<end>\d+)/(?<step>\d+)$|^(?<start>\d+)-(?<end>\d+)$|^(?<start>\d+)$|^(?<start>\d+)/(?<step>\d+)$|^(?<start>\*)/(?<step>\d+)$|^(?<start>\*)$",
                 RegexOptions.IgnoreCase);
 
-        private readonly List<ISpecification<object>> _specifications = new List<ISpecification<object>>();
-
-        protected CronField(string value)
+        protected CronField(string expression, ISpecificationFactory specificationFactory = null)
         {
-            Guard.AgainstNullOrEmptyString(value, "value");
+            Guard.AgainstNullOrEmptyString(expression, nameof(expression));
 
-            Value = value;
+            Expression = expression;
+            _specificationFactory = specificationFactory;
         }
 
-        public string Value { get; }
+        public string Expression { get; }
         public ExpressionType ExpressionType { get; protected set; }
 
-        public virtual bool IsSatisfiedBy(object item)
+        public virtual bool IsSatisfiedBy(Candidate item)
         {
             return !_specifications.Any() || _specifications.Any(specification => specification.IsSatisfiedBy(item));
         }
@@ -49,17 +52,17 @@ namespace Shuttle.Core.Cron
 
         protected string[] SplitValue()
         {
-            return Value.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
+            return Expression.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
         }
 
-        protected void AddSpecification(ISpecification<object> specification)
+        protected void AddSpecification(ISpecification<Candidate> specification)
         {
             Guard.AgainstNull(specification, nameof(specification));
 
             _specifications.Add(specification);
         }
 
-        protected void DefaultParsing(int minimum, int maximum)
+        protected void DefaultParsing(FieldName fieldName, int minimum, int maximum)
         {
             ExpressionType = ExpressionType.Default;
 
@@ -67,8 +70,23 @@ namespace Shuttle.Core.Cron
             {
                 var match = RangeExpression.Match(s);
 
-                Guard.Against<CronException>(!match.Success,
-                    string.Format(Resources.CronInvalidExpression, s));
+                if (!match.Success)
+                {
+                    Guard.Against<CronException>(_specificationFactory == null,
+                        string.Format(Resources.CronInvalidExpression, s));
+
+                    // ReSharper disable once PossibleNullReferenceException
+                    var specification = _specificationFactory.Create(new SpecificationParameters(fieldName, s));
+
+                    Guard.Against<CronException>(specification == null,
+                        string.Format(Resources.NullSpecificationFromFactory, fieldName, s));
+
+                    AddSpecification(specification);
+
+                    ExpressionType = ExpressionType.All;
+
+                    return;
+                }
 
                 var startValue = match.Groups["start"].Value;
                 var endValue = match.Groups["end"].Value;
@@ -105,6 +123,23 @@ namespace Shuttle.Core.Cron
 
                 AddSpecification(new RangeSpecification(start, end, step));
             }
+        }
+
+        public class Candidate
+        {
+            public Candidate(FieldName fieldName, string expression, DateTime date)
+            {
+                Guard.AgainstNullOrEmptyString(expression, nameof(expression));
+                Guard.AgainstUndefinedEnum<FieldName>(fieldName, nameof(fieldName));
+
+                FieldName = fieldName;
+                Expression = expression;
+                Date = date;
+            }
+
+            public FieldName FieldName { get; }
+            public string Expression { get; }
+            public DateTime Date { get; }
         }
     }
 }

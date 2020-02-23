@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Shuttle.Core.Specification;
 
 namespace Shuttle.Core.Cron.Tests
 {
@@ -167,6 +168,31 @@ namespace Shuttle.Core.Cron.Tests
 			Assert.Throws<CronException>(() => new CronDayOfMonth("10-5"));
 
 			new CronDayOfMonth("*/15");
+		}
+
+        [Test]
+        public void Should_fail_with_non_standard_character_when_specification_factory_does_not_support_it()
+        {
+			var factory = new DefaultSpecificationFactory(parameters =>
+            {
+                return !parameters.Expression.Equals("H", StringComparison.InvariantCultureIgnoreCase) 
+                    ? null 
+                    : new Specification<CronField.Candidate>(candidate => candidate.Date.Day % 2 == 0);
+            });
+
+            CronDayOfMonth field = null;
+            var control = new DateTime(DateTime.Now.Year, 01, 01);
+            var date = control.AddDays(-1);
+
+			Assert.That(() => new CronDayOfMonth("I", factory), Throws.TypeOf<CronException>());
+            Assert.That(() => field = new CronDayOfMonth("H", factory), Throws.Nothing);
+
+            for (var i = 0; i < 15; i++)
+            {
+                date = field.GetNext(date.AddDays(1));
+
+                Assert.That(date, Is.EqualTo(control.AddDays(i * 2 + 1)));
+            }
 		}
 	}
 }
