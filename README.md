@@ -4,7 +4,7 @@
 PM> Install-Package Shuttle.Core.Cron
 ```
 
-Provides [cron](https://en.wikipedia.org/wiki/Cron) expression parsing.  This implementation starts from the `minute` field (so no `second`).
+Provides [cron](https://en.wikipedia.org/wiki/Cron) expression parsing.  This implementation starts from the `minute` field (so no `second`).  Any seconds are removed from all dates that are used.
 
 ## CronExpression
 
@@ -20,26 +20,26 @@ public DateTime NextOccurrence()
 public DateTime NextOccurrence(DateTime date)
 ```
 
-Returns the next date that would follow the given `date`.  If no date is provided the root date will be used.  This method also sets the root date to the result.
+Returns the next date that would follow the given `date`.  This is accomplished by adding 1 muinute to the relevant date.  If no date is provided the root date will be used.  This method also sets the root date to the result.
 
 ``` c#
 public DateTime GetNextOccurrence(DateTime date)
 ```
 
-Returns the next date that would follow the given `date`.
+Returns the next date that would follow the given `date`.  If the given `date` satisfies the required specification(s) then the `date` is returned as-is.
 
 ``` c#
 public DateTime PreviousOccurrence()
 public DateTime PreviousOccurrence(DateTime date)
 ```
 
-Returns the previous date that would precede the given `date`.  If no date is provided the root date will be used.  This method also sets the root date to the result.
+Returns the previous date that would precede the given `date`.  This is accomplished by subtracting 1 muinute from the relevant date.  If no date is provided the root date will be used.  This method also sets the root date to the result.
 
 ``` c#
 public DateTime GetPreviousOccurrence(DateTime date)
 ```
 
-Returns the previous date that would precede the given `date`.
+Returns the previous date that would precede the given `date`.  If the given `date` satisfies the required specification(s) then the `date` is returned as-is.
 
 ## Cron Samples
 

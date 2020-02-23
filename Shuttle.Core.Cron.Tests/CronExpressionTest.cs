@@ -43,9 +43,21 @@ namespace Shuttle.Core.Cron.Tests
         }
 
         [Test]
+        public void Should_be_able_to_get_next_occurrence()
+        {
+            var dateTime = new DateTime(2000, 1, 1, 1, 0, 3);
+            var cron = new CronExpression("0 2 * * *", dateTime);
+
+            var previous1 = cron.GetNextOccurrence(dateTime);
+            var previous2 = cron.NextOccurrence();
+
+            Assert.That(previous2, Is.EqualTo(previous1));
+        }
+
+        [Test]
         public void Should_be_able_to_get_previous_occurrence()
         {
-            var dateTime = new DateTime(2000, 1, 1, 2, 0, 3);
+            var dateTime = new DateTime(2000, 1, 1, 1, 0, 3);
             var cron = new CronExpression("0 2 * * *", dateTime);
 
             var previous1 = cron.GetPreviousOccurrence(dateTime);

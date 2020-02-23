@@ -97,7 +97,7 @@ namespace Shuttle.Core.Cron
 
         public DateTime GetNextOccurrence(DateTime date)
         {
-            var result = date;
+            var result = Truncate(date);
 
             result = _cronMinute.GetNext(result);
             result = _cronHour.GetNext(result);
@@ -130,7 +130,7 @@ namespace Shuttle.Core.Cron
 
         public DateTime GetPreviousOccurrence(DateTime date)
         {
-            var result = date;
+            var result = Truncate(date);
 
             result = _cronMinute.GetPrevious(result);
             result = _cronHour.GetPrevious(result);
