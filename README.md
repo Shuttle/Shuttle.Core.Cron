@@ -7,15 +7,15 @@ PM> Install-Package Shuttle.Core.Cron
 Provides [cron](https://en.wikipedia.org/wiki/Cron) expression parsing:
 
 ```
-# ┌───────────── minute (0 - 59)
-# │ ┌───────────── hour (0 - 23)
-# │ │ ┌───────────── day of the month (1 - 31)
-# │ │ │ ┌───────────── month (1 - 12)
-# │ │ │ │ ┌───────────── day of the week (1 - 7): Sunday to Saturday 
-# │ │ │ │ │                                   
-# │ │ │ │ │
-# │ │ │ │ │
-# * * * * *
+ ┌───────────── minute (0 - 59)
+ │ ┌───────────── hour (0 - 23)
+ │ │ ┌───────────── day of the month (1 - 31)
+ │ │ │ ┌───────────── month (1 - 12)
+ │ │ │ │ ┌───────────── day of the week (1 - 7): Sunday to Saturday 
+ │ │ │ │ │                                   
+ │ │ │ │ │
+ │ │ │ │ │
+ * * * * *
 ```
 
 This implementation starts from the `minute` field (so no `second`).  Any seconds are removed from all dates that are used.
