@@ -4,7 +4,21 @@
 PM> Install-Package Shuttle.Core.Cron
 ```
 
-Provides [cron](https://en.wikipedia.org/wiki/Cron) expression parsing.  This implementation starts from the `minute` field (so no `second`).  Any seconds are removed from all dates that are used.
+Provides [cron](https://en.wikipedia.org/wiki/Cron) expression parsing:
+
+```
+# ┌───────────── minute (0 - 59)
+# │ ┌───────────── hour (0 - 23)
+# │ │ ┌───────────── day of the month (1 - 31)
+# │ │ │ ┌───────────── month (1 - 12)
+# │ │ │ │ ┌───────────── day of the week (1 - 7): Sunday to Saturday 
+# │ │ │ │ │                                   
+# │ │ │ │ │
+# │ │ │ │ │
+# * * * * *
+```
+
+This implementation starts from the `minute` field (so no `second`).  Any seconds are removed from all dates that are used.
 
 ## CronExpression
 
@@ -45,12 +59,15 @@ Returns the previous date that would precede the given `date`.  If the given `da
 
 Format is {minute} {hour} {day-of-month} {month} {day-of-week}
 
-```
-{minutes} : 0-59 , - * /
-{hours} : 	0-23 , - * /
-{day-of-month} 1-31 , - * ? / L W
-{month} : 1-12 or JAN-DEC	, - * /
-{day-of-week} : 1-7 or SUN-SAT , - * ? / L #
+| Field | Options |
+| --- | --- |
+| `minutes` | 0-59 , - * / |
+| `hours` | 0-23 , - * / |
+| `day-of-month` | 1-31 , - * ? / L W |
+| `month` | 1-12 or JAN-DEC	, - * / |
+| `day-of-week` | 1-7 or SUN-SAT , - * ? / L # |
+
+If `day-of-month` is specified then `day-of-week` should be `?` and vice-versa.
 
 Examples:
 * * * * * - is every minute of every hour of every day of every month
