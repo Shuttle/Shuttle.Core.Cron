@@ -71,7 +71,7 @@ If `day-of-month` is specified then `day-of-week` should be `?` and vice-versa.
 
 Examples:
 ```
-* * * * *` - is every minute of every hour of every day of every month
+* * * * * - is every minute of every hour of every day of every month
 5,10-12,17/5 * * * * - minute 5, 10, 11, 12, and every 5th minute after that
 ```
 
