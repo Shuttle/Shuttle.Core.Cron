@@ -23,34 +23,34 @@ This implementation starts from the `minute` field (so no `second`).  Any second
 ## CronExpression
 
 ``` c#
-public CronExpression(string expression, ISpecificationFactory specificationFactory = null) : this(expression, DateTime.Now, specificationFactory)
-public CronExpression(string expression, DateTime date, ISpecificationFactory specificationFactory = null)
+public CronExpression(string expression, ISpecificationFactory specificationFactory = null) : this(expression, DateTime.Now, specificationFactory);
+public CronExpression(string expression, DateTime date, ISpecificationFactory specificationFactory = null);
 ```
 
 Creates a `CronExpression` instance and parses the given `expression`.  The `date` specifies to root date from which to determine either the next or previous occurrence.
 
 ``` c#
-public DateTime NextOccurrence()
-public DateTime NextOccurrence(DateTime date)
+public DateTime NextOccurrence();
+public DateTime NextOccurrence(DateTime date);
 ```
 
 Returns the next date that would follow the given `date`.  This is accomplished by adding 1 muinute to the relevant date.  If no date is provided the root date will be used.  This method also sets the root date to the result.
 
 ``` c#
-public DateTime GetNextOccurrence(DateTime date)
+public DateTime GetNextOccurrence(DateTime date);
 ```
 
 Returns the next date that would follow the given `date`.  If the given `date` satisfies the required specification(s) then the `date` is returned as-is.
 
 ``` c#
-public DateTime PreviousOccurrence()
-public DateTime PreviousOccurrence(DateTime date)
+public DateTime PreviousOccurrence();
+public DateTime PreviousOccurrence(DateTime date);
 ```
 
 Returns the previous date that would precede the given `date`.  This is accomplished by subtracting 1 muinute from the relevant date.  If no date is provided the root date will be used.  This method also sets the root date to the result.
 
 ``` c#
-public DateTime GetPreviousOccurrence(DateTime date)
+public DateTime GetPreviousOccurrence(DateTime date);
 ```
 
 Returns the previous date that would precede the given `date`.  If the given `date` satisfies the required specification(s) then the `date` is returned as-is.
@@ -77,7 +77,7 @@ Examples:
 
 ## Specifications
 
-Specifications need to implementation `ISpecification<CronField.Candidate>`.
+Specifications need to implement `ISpecification<CronField.Candidate>`.
 
 You may pass an implementation of the `ISpecificationFactory` as a parameter to the `CronExpression`.  There is a `DefaultSpecificationFactory` that accepts a function callback in the constructor for scenarios where an explicit `ISpecificationFactory` implementation may not be warranted, e.g.:
 
