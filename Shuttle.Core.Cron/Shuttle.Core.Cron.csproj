@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
@@ -6,10 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include=".build\package.msbuild" />
-    <None Include=".build\package.nuspec" />
-    <None Include=".build\Shuttle.MSBuild.dll" />
-    <None Include=".build\Shuttle.MSBuild.targets" />
+    <None Include=".package\AssemblyInfo.cs.template" />
+    <None Include=".package\package.msbuild" />
+    <None Include=".package\package.nuspec.template" />
+    <None Include=".package\Shuttle.NuGetPackager.MSBuild.dll" />
+    <None Include=".package\Shuttle.NuGetPackager.targets" />
   </ItemGroup>
 
   <ItemGroup>

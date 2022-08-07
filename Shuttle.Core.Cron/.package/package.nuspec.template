@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<package>
+	<metadata>
+		<id>Shuttle.Core.Cron</id>
+		<version>#{SemanticVersion}#</version>
+		<authors>Eben Roux</authors>
+		<owners>Eben Roux</owners>
+		<license type="expression">BSD-3-Clause</license>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<icon>images\logo.png</icon>
+		<readme>docs\README.md</readme>
+		<repository type="git" url="https://github.com/Shuttle/Shuttle.Core.Cron.git" />
+		<projectUrl>https://github.com/Shuttle/Shuttle.Core.Cron</projectUrl>
+		<description>Cron expression parsing.</description>
+		<copyright>Copyright (c) #{Year}#, Eben Roux</copyright>
+		<tags>cron scheduling</tags>
+		<dependencies>
+#{Dependencies}#
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="..\..\..\.media\logo.png" target="images" />
+		<file src="..\..\..\README.md" target="docs" />
+		<file src="lib\**\*.*" target="lib" />
+	</files>
+</package>
