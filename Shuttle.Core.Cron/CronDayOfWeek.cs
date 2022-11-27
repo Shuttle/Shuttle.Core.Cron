@@ -62,7 +62,7 @@ namespace Shuttle.Core.Cron
             {
                 ExpressionType = ExpressionType.WeekDayOccurrence;
 
-                AddSpecification(new WeekDayOccurenceSpecification(Convert.ToInt32(match.Groups["day"].Value),
+                AddSpecification(new WeekDayOccurrenceSpecification(Convert.ToInt32(match.Groups["day"].Value),
                     Convert.ToInt32(match.Groups["occurrence"].Value)));
 
                 return;

@@ -4,16 +4,16 @@ using Shuttle.Core.Specification;
 
 namespace Shuttle.Core.Cron
 {
-    public class DefaultSpecificationFactory : ISpecificationFactory
+    public class SpecificationFactory : ISpecificationFactory
     {
-        private readonly Func<SpecificationParameters, ISpecification<CronField.Candidate>> _creator;
+        private readonly Func<SpecificationParameters, ISpecification<CronField.Candidate>> _factory;
 
-        public DefaultSpecificationFactory(Func<SpecificationParameters, ISpecification<CronField.Candidate>> creator)
+        public SpecificationFactory(Func<SpecificationParameters, ISpecification<CronField.Candidate>> factory)
         {
-            _creator = creator;
+            _factory = Guard.AgainstNull(factory, nameof(factory));
         }
 
-        public DefaultSpecificationFactory()
+        public SpecificationFactory()
         {
         }
 
@@ -21,13 +21,13 @@ namespace Shuttle.Core.Cron
         {
             Guard.AgainstNull(parameters, nameof(parameters));
 
-            if (_creator == null)
+            if (_factory == null)
             {
                 throw new CronException(string.Format(Resources.InvalidDefaultSpecificationFactoryConfiguration,
                     parameters.Expression, parameters.FieldName));
             }
 
-            return _creator.Invoke(parameters);
+            return _factory.Invoke(parameters);
         }
     }
 }

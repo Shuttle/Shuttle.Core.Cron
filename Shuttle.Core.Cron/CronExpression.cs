@@ -30,12 +30,10 @@ namespace Shuttle.Core.Cron
 
         public CronExpression(string expression, DateTime date, ISpecificationFactory specificationFactory = null)
         {
-            Guard.AgainstNullOrEmptyString(expression, nameof(expression));
-
-            Expression = expression;
+            Expression = Guard.AgainstNullOrEmptyString(expression, nameof(expression));
 
             _cronDate = Truncate(date);
-            _specificationFactory = specificationFactory ?? new DefaultSpecificationFactory();
+            _specificationFactory = specificationFactory ?? new SpecificationFactory();
 
             ParseExpression(expression);
         }

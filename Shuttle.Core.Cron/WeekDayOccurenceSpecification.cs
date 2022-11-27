@@ -3,12 +3,12 @@ using Shuttle.Core.Specification;
 
 namespace Shuttle.Core.Cron
 {
-    public class WeekDayOccurenceSpecification : ISpecification<CronField.Candidate>
+    public class WeekDayOccurrenceSpecification : ISpecification<CronField.Candidate>
     {
         private readonly int _occurrence;
         private readonly int _weekDay;
 
-        public WeekDayOccurenceSpecification(int weekDay, int occurrence)
+        public WeekDayOccurrenceSpecification(int weekDay, int occurrence)
         {
             _weekDay = weekDay;
             _occurrence = occurrence;

@@ -33,9 +33,7 @@ namespace Shuttle.Core.Cron
 
         protected CronField(string expression, ISpecificationFactory specificationFactory = null)
         {
-            Guard.AgainstNullOrEmptyString(expression, nameof(expression));
-
-            Expression = expression;
+            Expression = Guard.AgainstNullOrEmptyString(expression, nameof(expression));
             _specificationFactory = specificationFactory;
         }
 
@@ -129,11 +127,8 @@ namespace Shuttle.Core.Cron
         {
             public Candidate(FieldName fieldName, string expression, DateTime date)
             {
-                Guard.AgainstNullOrEmptyString(expression, nameof(expression));
-                Guard.AgainstUndefinedEnum<FieldName>(fieldName, nameof(fieldName));
-
-                FieldName = fieldName;
-                Expression = expression;
+                FieldName = Guard.AgainstUndefinedEnum<FieldName>(fieldName, nameof(fieldName));
+                Expression = Guard.AgainstNullOrEmptyString(expression, nameof(expression));
                 Date = date;
             }
 

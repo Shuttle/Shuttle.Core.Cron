@@ -173,7 +173,7 @@ namespace Shuttle.Core.Cron.Tests
         [Test]
         public void Should_fail_with_non_standard_character_when_specification_factory_does_not_support_it()
         {
-			var factory = new DefaultSpecificationFactory(parameters =>
+			var factory = new SpecificationFactory(parameters =>
             {
                 return !parameters.Expression.Equals("H", StringComparison.InvariantCultureIgnoreCase) 
                     ? null 
