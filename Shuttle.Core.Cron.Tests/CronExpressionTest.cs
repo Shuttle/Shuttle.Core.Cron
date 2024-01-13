@@ -19,6 +19,31 @@ namespace Shuttle.Core.Cron.Tests
         }
 
         [Test]
+        public void Should_be_able_to_get_every_five_minutes()
+        {
+            var date = new DateTime(2011, 1, 1, 0, 0, 0);
+            var cron = new CronExpression("0/5 * * * *", date);
+
+            for (var i = 1; i < 21; i++)
+            {
+                Assert.That(cron.NextOccurrence(), Is.EqualTo(date.AddMinutes(5 * i)));
+            }
+        }
+
+        [Test]
+        public void Should_be_able_to_get_individual_minutes()
+        {
+            var date = new DateTime(2011, 1, 1, 0, 0, 0);
+            var cron = new CronExpression("5,10,15,30,45 * * * *", date);
+
+            Assert.That(cron.NextOccurrence(), Is.EqualTo(date.AddMinutes(5)));
+            Assert.That(cron.NextOccurrence(), Is.EqualTo(date.AddMinutes(10)));
+            Assert.That(cron.NextOccurrence(), Is.EqualTo(date.AddMinutes(15)));
+            Assert.That(cron.NextOccurrence(), Is.EqualTo(date.AddMinutes(30)));
+            Assert.That(cron.NextOccurrence(), Is.EqualTo(date.AddMinutes(45)));
+        }
+
+        [Test]
         public void Should_be_able_to_get_last_day_of_month_across_multiple_months()
         {
             var date = new DateTime(2011, 1, 1, 0, 0, 0);

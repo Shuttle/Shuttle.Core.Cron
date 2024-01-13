@@ -15,11 +15,11 @@ namespace Shuttle.Core.Cron.Tests
 
 			for (var i = 0; i < 60; i++)
 			{
-				Assert.AreEqual(date, field.GetNext(date));
+				Assert.That(date, Is.EqualTo(field.GetNext(date)));
 
 				date = date.AddMinutes(1);
 			}
-		}
+        }
 
 		[Test]
 		public void Should_be_able_to_satisfy_individual_values()
@@ -30,6 +30,7 @@ namespace Shuttle.Core.Cron.Tests
 			var date = field.GetNext(control);
 
 			Assert.AreEqual(control.AddMinutes(5), date);
+
 			date = field.GetNext(date.AddMinutes(1));
 
 			Assert.AreEqual(control.AddMinutes(10), date);
