@@ -23,19 +23,38 @@ public class CronExpression
     private CronMinute _cronMinute;
     private CronMonth _cronMonth;
 
-    public CronExpression(string expression, ISpecificationFactory specificationFactory = null)
+    public CronExpression(string expression, ISpecificationFactory? specificationFactory = null)
         : this(expression, DateTime.Now, specificationFactory)
     {
     }
 
-    public CronExpression(string expression, DateTime date, ISpecificationFactory specificationFactory = null)
+    public CronExpression(string expression, DateTime date, ISpecificationFactory? specificationFactory = null)
     {
         Expression = Guard.AgainstNullOrEmptyString(expression, nameof(expression));
 
         _cronDate = Truncate(date);
         _specificationFactory = specificationFactory ?? new SpecificationFactory();
 
-        ParseExpression(expression);
+        var values = expression.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+        var length = values.Length;
+
+        Guard.Against<CronException>(length != 5, string.Format(Resources.CronInvalidFieldCount, length));
+
+        _cronMinute = new(values[0], _specificationFactory);
+        _cronHour = new(values[1], _specificationFactory);
+        _cronDayOfMonth = new(values[2], _specificationFactory);
+        _cronMonth = new(values[3], _specificationFactory);
+        _cronDayOfWeek = new(values[4], _specificationFactory);
+
+        Guard.Against<CronException>(_cronDayOfMonth.ExpressionType == ExpressionType.Skipped &&
+                                     _cronDayOfWeek.ExpressionType == ExpressionType.Skipped,
+            string.Format(Resources.CronNoDaysSpecified, expression));
+        Guard.Against<CronException>(_cronDayOfMonth.ExpressionType != ExpressionType.Skipped &&
+                                     _cronDayOfMonth.ExpressionType != ExpressionType.All &&
+                                     _cronDayOfWeek.ExpressionType != ExpressionType.Skipped &&
+                                     _cronDayOfWeek.ExpressionType != ExpressionType.All,
+            string.Format(Resources.CronBothDaysSpecified, expression));
     }
 
     public string Expression { get; }
@@ -84,30 +103,6 @@ public class CronExpression
         }
 
         return _cronDate;
-    }
-
-    private void ParseExpression(string expression)
-    {
-        var values = expression.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-        var length = values.Length;
-
-        Guard.Against<CronException>(length != 5, string.Format(Resources.CronInvalidFieldCount, length));
-
-        _cronMinute = new(values[0], _specificationFactory);
-        _cronHour = new(values[1], _specificationFactory);
-        _cronDayOfMonth = new(values[2], _specificationFactory);
-        _cronMonth = new(values[3], _specificationFactory);
-        _cronDayOfWeek = new(values[4], _specificationFactory);
-
-        Guard.Against<CronException>(_cronDayOfMonth.ExpressionType == ExpressionType.Skipped &&
-                                     _cronDayOfWeek.ExpressionType == ExpressionType.Skipped,
-            string.Format(Resources.CronNoDaysSpecified, expression));
-        Guard.Against<CronException>(_cronDayOfMonth.ExpressionType != ExpressionType.Skipped &&
-                                     _cronDayOfMonth.ExpressionType != ExpressionType.All &&
-                                     _cronDayOfWeek.ExpressionType != ExpressionType.Skipped &&
-                                     _cronDayOfWeek.ExpressionType != ExpressionType.All,
-            string.Format(Resources.CronBothDaysSpecified, expression));
     }
 
     public DateTime PreviousOccurrence()

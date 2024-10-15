@@ -11,7 +11,7 @@ public class CronDayOfWeek : CronField
     private static readonly Regex OccurrenceExpression = new(@"^(?<day>\d)\#(?<occurrence>\d)$",
         RegexOptions.IgnoreCase);
 
-    public CronDayOfWeek(string value, ISpecificationFactory specificationFactory = null)
+    public CronDayOfWeek(string value, ISpecificationFactory? specificationFactory = null)
         : base(NameExpression.Replace(value,
             match =>
             {

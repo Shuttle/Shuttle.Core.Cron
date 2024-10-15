@@ -44,7 +44,7 @@ public abstract class CronField : ISpecification<CronField.Candidate>
 
     protected void AddSpecification(ISpecification<Candidate> specification)
     {
-        Guard.AgainstNull(specification, nameof(specification));
+        Guard.AgainstNull(specification);
 
         _specifications.Add(specification);
     }
@@ -65,7 +65,7 @@ public abstract class CronField : ISpecification<CronField.Candidate>
 
                 Guard.Against<CronException>(specification == null, string.Format(Resources.NullSpecificationFromFactory, fieldName, s));
                 
-                AddSpecification(_specificationFactory!.Create(new(fieldName, s)));
+                AddSpecification(specification!);
 
                 ExpressionType = ExpressionType.All;
 
