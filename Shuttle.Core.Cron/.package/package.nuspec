@@ -3,7 +3,7 @@
 <package>
 	<metadata>
 		<id>Shuttle.Core.Cron</id>
-		<version>10.1.3</version>
+		<version>20.0.0</version>
 		<authors>Eben Roux</authors>
 		<owners>Eben Roux</owners>
 		<license type="expression">BSD-3-Clause</license>
@@ -16,8 +16,8 @@
 		<copyright>Copyright (c) 2024, Eben Roux</copyright>
 		<tags>cron scheduling</tags>
 		<dependencies>
-      <dependency id="Shuttle.Core.Contract" version="11.1.0" />
-      <dependency id="Shuttle.Core.Specification" version="11.0.0" />
+      <dependency id="Shuttle.Core.Contract" version="20.0.0" />
+      <dependency id="Shuttle.Core.Specification" version="20.0.0" />
 		</dependencies>
 	</metadata>
 	<files>
