@@ -1,6 +1,5 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
-
 #if NETFRAMEWORK
 [assembly: AssemblyTitle(".NET Framework")]
 #endif

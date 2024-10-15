@@ -1,144 +1,143 @@
 using System;
 using NUnit.Framework;
 
-namespace Shuttle.Core.Cron.Tests
+namespace Shuttle.Core.Cron.Tests;
+
+[TestFixture]
+public class CronDayOfWeekTest
 {
-	[TestFixture]
-	public class CronDayOfWeekTest
-	{
-		[Test]
-		public void Should_be_able_to_satisfy_asterisk_value()
-		{
-			var field = new CronDayOfWeek("*");
+    [Test]
+    public void Should_be_able_to_satisfy_asterisk_value()
+    {
+        var field = new CronDayOfWeek("*");
 
-			var date = new DateTime(2011, 01, 01, 0, 0, 0);
+        var date = new DateTime(2011, 01, 01, 0, 0, 0);
 
-			for (var i = 0; i < 8; i++)
-			{
-				Assert.AreEqual(date, field.GetNext(date));
+        for (var i = 0; i < 8; i++)
+        {
+            Assert.That(field.GetNext(date), Is.EqualTo(date));
 
-				date = date.AddDays(1);
-			}
-		}
+            date = date.AddDays(1);
+        }
+    }
 
-		[Test]
-		public void Should_be_able_to_satisfy_last_day_of_week()
-		{
-			var field = new CronDayOfWeek("L");
+    [Test]
+    public void Should_be_able_to_satisfy_last_day_of_week()
+    {
+        var field = new CronDayOfWeek("L");
 
-			var control = new DateTime(2011, 01, 01, 0, 0, 0);
-			var date = field.GetNext(control);
+        var control = new DateTime(2011, 01, 01, 0, 0, 0);
+        var date = field.GetNext(control);
 
-			Assert.AreEqual(control, date);
-			date = field.GetNext(date.AddDays(1));
+        Assert.That(control, Is.EqualTo(date));
+        date = field.GetNext(date.AddDays(1));
 
-			Assert.AreEqual(control.AddDays(7), date);
-			date = field.GetNext(date.AddDays(1));
+        Assert.That(control.AddDays(7), Is.EqualTo(date));
+        date = field.GetNext(date.AddDays(1));
 
-			Assert.AreEqual(control.AddDays(14), date);
-			date = field.GetNext(date.AddDays(1));
+        Assert.That(control.AddDays(14), Is.EqualTo(date));
+        date = field.GetNext(date.AddDays(1));
 
-			Assert.AreEqual(control.AddDays(21), date);
-			date = field.GetNext(date.AddDays(1));
+        Assert.That(control.AddDays(21), Is.EqualTo(date));
+        date = field.GetNext(date.AddDays(1));
 
-			Assert.AreEqual(control.AddDays(28), date);
-		}
+        Assert.That(control.AddDays(28), Is.EqualTo(date));
+    }
 
-		[Test]
-		public void Should_be_able_to_satisfy_occurrence()
-		{
-			var field = new CronDayOfWeek("4#2");
+    [Test]
+    public void Should_be_able_to_satisfy_occurrence()
+    {
+        var field = new CronDayOfWeek("4#2");
 
-			var date = new DateTime(2011, 01, 01, 0, 0, 0);
+        var date = new DateTime(2011, 01, 01, 0, 0, 0);
 
-			Assert.AreEqual(date.AddDays(11), field.GetNext(date));
-		}
+        Assert.That(date.AddDays(11), Is.EqualTo(field.GetNext(date)));
+    }
 
-		[Test]
-		public void Should_be_able_to_satisfy_individual_values()
-		{
-			var field = new CronDayOfWeek("1,3,6");
+    [Test]
+    public void Should_be_able_to_satisfy_individual_values()
+    {
+        var field = new CronDayOfWeek("1,3,6");
 
-			var control = new DateTime(2011, 01, 01, 0, 0, 0);
-			var date = field.GetNext(control);
+        var control = new DateTime(2011, 01, 01, 0, 0, 0);
+        var date = field.GetNext(control);
 
-			Assert.AreEqual(control.AddDays(1), date);
-			date = field.GetNext(date.AddDays(1));
+        Assert.That(control.AddDays(1), Is.EqualTo(date));
+        date = field.GetNext(date.AddDays(1));
 
-			Assert.AreEqual(control.AddDays(3), date);
-			date = field.GetNext(date.AddDays(1));
+        Assert.That(control.AddDays(3), Is.EqualTo(date));
+        date = field.GetNext(date.AddDays(1));
 
-			Assert.AreEqual(control.AddDays(6), date);
-			date = field.GetNext(date.AddDays(1));
+        Assert.That(control.AddDays(6), Is.EqualTo(date));
+        date = field.GetNext(date.AddDays(1));
 
-			Assert.AreEqual(control.AddDays(8), date);
-			date = field.GetNext(date.AddDays(1));
+        Assert.That(control.AddDays(8), Is.EqualTo(date));
+        date = field.GetNext(date.AddDays(1));
 
-			Assert.AreEqual(control.AddDays(10), date);
-			date = field.GetNext(date.AddDays(1));
-			
-			Assert.AreEqual(control.AddDays(13), date);
-		}
+        Assert.That(control.AddDays(10), Is.EqualTo(date));
+        date = field.GetNext(date.AddDays(1));
 
-		[Test]
-		public void Should_be_able_to_satisfy_a_range_of_values()
-		{
-			var field = new CronDayOfWeek("2-4");
+        Assert.That(control.AddDays(13), Is.EqualTo(date));
+    }
 
-			var control = new DateTime(2011, 01, 01, 0, 0, 0);
-			var date = field.GetNext(control);
+    [Test]
+    public void Should_be_able_to_satisfy_a_range_of_values()
+    {
+        var field = new CronDayOfWeek("2-4");
 
-			Assert.AreEqual(control.AddDays(2), date);
-			date = field.GetNext(date.AddDays(1));
+        var control = new DateTime(2011, 01, 01, 0, 0, 0);
+        var date = field.GetNext(control);
 
-			Assert.AreEqual(control.AddDays(3), date);
-			date = field.GetNext(date.AddDays(1));
+        Assert.That(control.AddDays(2), Is.EqualTo(date));
+        date = field.GetNext(date.AddDays(1));
 
-			Assert.AreEqual(control.AddDays(4), date);
-			date = field.GetNext(date.AddDays(1));
+        Assert.That(control.AddDays(3), Is.EqualTo(date));
+        date = field.GetNext(date.AddDays(1));
 
-			Assert.AreEqual(control.AddDays(9), date);
-			date = field.GetNext(date.AddDays(1));
+        Assert.That(control.AddDays(4), Is.EqualTo(date));
+        date = field.GetNext(date.AddDays(1));
 
-			Assert.AreEqual(control.AddDays(10), date);
-			date = field.GetNext(date.AddDays(1));
+        Assert.That(control.AddDays(9), Is.EqualTo(date));
+        date = field.GetNext(date.AddDays(1));
 
-			Assert.AreEqual(control.AddDays(11), date);
-		}
+        Assert.That(control.AddDays(10), Is.EqualTo(date));
+        date = field.GetNext(date.AddDays(1));
 
-		[Test]
-		public void Should_be_able_to_satisfy_a_stepped_values()
-		{
-			var field = new CronDayOfWeek("2/5");
+        Assert.That(control.AddDays(11), Is.EqualTo(date));
+    }
 
-			var control = new DateTime(2011, 01, 01, 0, 0, 0);
-			var date = field.GetNext(control);
+    [Test]
+    public void Should_be_able_to_satisfy_a_stepped_values()
+    {
+        var field = new CronDayOfWeek("2/5");
 
-			Assert.AreEqual(control, date);
-			date = field.GetNext(date.AddDays(1));
+        var control = new DateTime(2011, 01, 01, 0, 0, 0);
+        var date = field.GetNext(control);
 
-			Assert.AreEqual(control.AddDays(2), date);
-			date = field.GetNext(date.AddDays(1));
+        Assert.That(control, Is.EqualTo(date));
+        date = field.GetNext(date.AddDays(1));
 
-			Assert.AreEqual(control.AddDays(7), date);
-			date = field.GetNext(date.AddDays(1));
+        Assert.That(control.AddDays(2), Is.EqualTo(date));
+        date = field.GetNext(date.AddDays(1));
 
-			Assert.AreEqual(control.AddDays(9), date);
-			date = field.GetNext(date.AddDays(1));
+        Assert.That(control.AddDays(7), Is.EqualTo(date));
+        date = field.GetNext(date.AddDays(1));
 
-			Assert.AreEqual(control.AddDays(14), date);
-		}
+        Assert.That(control.AddDays(9), Is.EqualTo(date));
+        date = field.GetNext(date.AddDays(1));
 
-		[Test]
-		public void Should_throw_exceptions_on_invalid_expressions()
-		{
-			Assert.Throws<NullReferenceException>(() => new CronDayOfWeek(""));
-			Assert.Throws<CronException>(() => new CronDayOfWeek("invalid"));
-			Assert.Throws<CronException>(() => new CronDayOfWeek("10-60"));
-			Assert.Throws<CronException>(() => new CronDayOfWeek("60-60"));
-			Assert.Throws<CronException>(() => new CronDayOfWeek("10-5"));
+        Assert.That(control.AddDays(14), Is.EqualTo(date));
+    }
 
-			new CronDayOfWeek("*/15");
-		}
-	}
+    [Test]
+    public void Should_throw_exceptions_on_invalid_expressions()
+    {
+        Assert.Throws<NullReferenceException>(() => _ = new CronDayOfWeek(""));
+        Assert.Throws<CronException>(() => _ = new CronDayOfWeek("invalid"));
+        Assert.Throws<CronException>(() => _ = new CronDayOfWeek("10-60"));
+        Assert.Throws<CronException>(() => _ = new CronDayOfWeek("60-60"));
+        Assert.Throws<CronException>(() => _ = new CronDayOfWeek("10-5"));
+
+        _ = new CronDayOfWeek("*/15");
+    }
 }

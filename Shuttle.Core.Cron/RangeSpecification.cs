@@ -1,73 +1,71 @@
-using System;
 using System.Collections.Generic;
 using Shuttle.Core.Contract;
 using Shuttle.Core.Specification;
 
-namespace Shuttle.Core.Cron
+namespace Shuttle.Core.Cron;
+
+public class RangeSpecification : ISpecification<CronField.Candidate>
 {
-	public class RangeSpecification : ISpecification<CronField.Candidate>
-	{
-		private readonly List<int> _values = new List<int>();
+    private readonly List<int> _values = new();
 
-		public RangeSpecification(int start, int end, int step)
-		{
-			Guard.Against<CronException>(end < start, Resources.CronStartValueLargerThanEndValue);
+    public RangeSpecification(int start, int end, int step)
+    {
+        Guard.Against<CronException>(end < start, Resources.CronStartValueLargerThanEndValue);
 
-			var value = start;
+        var value = start;
 
-			while (value <= end)
-			{
-				_values.Add(value);
+        while (value <= end)
+        {
+            _values.Add(value);
 
-				value += step;
-			}
-		}
+            value += step;
+        }
+    }
 
-		public RangeSpecification(int value)
-			: this(value, value, 1)
-		{
-		}
+    public RangeSpecification(int value)
+        : this(value, value, 1)
+    {
+    }
 
-		public bool IsSatisfiedBy(CronField.Candidate item)
-		{
-			Guard.AgainstNull(item, nameof(item));
+    public bool IsSatisfiedBy(CronField.Candidate item)
+    {
+        Guard.AgainstNull(item, nameof(item));
 
-            int compare;
+        int compare;
 
-            switch (item.FieldName)
+        switch (item.FieldName)
+        {
+            case FieldName.DayOfWeek:
             {
-                case FieldName.DayOfWeek:
-                {
-                    compare = (int)item.Date.DayOfWeek+1;
-                    break;
-                }
-                case FieldName.DayOfMonth:
-                {
-                    compare = item.Date.Day;
-                    break;
-                }
-                case FieldName.Month:
-                {
-                    compare = item.Date.Month;
-                    break;
-                }
-                case FieldName.Hour:
-                {
-                    compare = item.Date.Hour;
-                    break;
-                }
-                case FieldName.Minute:
-                {
-                    compare = item.Date.Minute;
-                    break;
-                }
-                default:
-                {
-                    throw new CronException(string.Format(Resources.CronInvalidFieldNameExcaption, typeof(int).FullName, item.GetType().FullName));
-                }
+                compare = (int)item.Date.DayOfWeek + 1;
+                break;
             }
+            case FieldName.DayOfMonth:
+            {
+                compare = item.Date.Day;
+                break;
+            }
+            case FieldName.Month:
+            {
+                compare = item.Date.Month;
+                break;
+            }
+            case FieldName.Hour:
+            {
+                compare = item.Date.Hour;
+                break;
+            }
+            case FieldName.Minute:
+            {
+                compare = item.Date.Minute;
+                break;
+            }
+            default:
+            {
+                throw new CronException(string.Format(Resources.CronInvalidFieldNameExcaption, typeof(int).FullName, item.GetType().FullName));
+            }
+        }
 
-            return _values.Contains(compare);
-		}
-	}
+        return _values.Contains(compare);
+    }
 }
