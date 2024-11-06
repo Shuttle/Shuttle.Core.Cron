@@ -52,7 +52,11 @@ namespace Shuttle.Core.Cron.Tests
 			var date = new DateTime(2011, 01, 01, 0, 0, 0);
 
 			Assert.AreEqual(date.AddDays(11), field.GetNext(date));
-		}
+
+            field = new CronDayOfWeek("6#1");
+
+            Assert.AreEqual(date.AddDays(6), field.GetNext(date));
+        }
 
 		[Test]
 		public void Should_be_able_to_satisfy_individual_values()

@@ -1,5 +1,6 @@
 using Shuttle.Core.Contract;
 using Shuttle.Core.Specification;
+using System;
 
 namespace Shuttle.Core.Cron
 {
@@ -18,7 +19,16 @@ namespace Shuttle.Core.Cron
         {
             Guard.AgainstNull(item, nameof(item));
 
-            return (int) item.Date.DayOfWeek + 1 == _weekDay && _occurrence == item.Date.Day / 7 + 1;
+            var firstDayOfWeek = new DateTime(item.Date.Year, item.Date.Month, 1).DayOfWeek;
+            var daysOffset = (int)item.Date.DayOfWeek - (int)firstDayOfWeek;
+
+            if (daysOffset < 0)
+            {
+                daysOffset += 7;
+            }
+
+            return (int)item.Date.DayOfWeek + 1 == _weekDay &&
+                   _occurrence == (item.Date.Day - (1 + daysOffset)) / 7 + 1;
         }
     }
 }
