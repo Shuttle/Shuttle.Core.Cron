@@ -117,8 +117,8 @@ public abstract class CronField : ISpecification<CronField.Candidate>
     {
         public Candidate(FieldName fieldName, string expression, DateTime date)
         {
-            FieldName = Guard.AgainstUndefinedEnum<FieldName>(fieldName, nameof(fieldName));
-            Expression = Guard.AgainstNullOrEmptyString(expression, nameof(expression));
+            FieldName = Guard.AgainstUndefinedEnum<FieldName>(fieldName);
+            Expression = Guard.AgainstNullOrEmptyString(expression);
             Date = date;
         }
 

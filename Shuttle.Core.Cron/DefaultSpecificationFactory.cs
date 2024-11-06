@@ -10,7 +10,7 @@ public class SpecificationFactory : ISpecificationFactory
 
     public SpecificationFactory(Func<SpecificationParameters, ISpecification<CronField.Candidate>?> factory)
     {
-        _factory = Guard.AgainstNull(factory, nameof(factory));
+        _factory = Guard.AgainstNull(factory);
     }
 
     public SpecificationFactory()
@@ -19,7 +19,7 @@ public class SpecificationFactory : ISpecificationFactory
 
     public ISpecification<CronField.Candidate>? Create(SpecificationParameters parameters)
     {
-        Guard.AgainstNull(parameters, nameof(parameters));
+        Guard.AgainstNull(parameters);
 
         if (_factory == null)
         {

@@ -47,11 +47,23 @@ public class CronDayOfWeekTest
     [Test]
     public void Should_be_able_to_satisfy_occurrence()
     {
-        var field = new CronDayOfWeek("4#2");
+        var field = new CronDayOfWeek("6#1");
 
-        var date = new DateTime(2011, 01, 01, 0, 0, 0);
+        var date = new DateTime(2011, 1, 1);
 
-        Assert.That(date.AddDays(11), Is.EqualTo(field.GetNext(date)));
+        Assert.That(field.GetNext(date), Is.EqualTo(date.AddDays(6)));
+
+        field = new("6#2");
+
+        Assert.That(field.GetNext(date), Is.EqualTo(date.AddDays(13)));
+
+        field = new("6#3");
+
+        Assert.That(field.GetNext(date), Is.EqualTo(date.AddDays(20)));
+
+        field = new("6#4");
+
+        Assert.That(field.GetNext(date), Is.EqualTo(date.AddDays(27)));
     }
 
     [Test]

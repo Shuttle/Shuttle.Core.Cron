@@ -29,7 +29,7 @@ public class RangeSpecification : ISpecification<CronField.Candidate>
 
     public bool IsSatisfiedBy(CronField.Candidate item)
     {
-        Guard.AgainstNull(item, nameof(item));
+        Guard.AgainstNull(item);
 
         int compare;
 

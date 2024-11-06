@@ -15,13 +15,12 @@ public enum FieldName
 public class CronExpression
 {
     private readonly long _minuteTicks = TimeSpan.FromMinutes(1).Ticks;
-    private readonly ISpecificationFactory _specificationFactory;
     private DateTime _cronDate;
-    private CronDayOfMonth _cronDayOfMonth;
-    private CronDayOfWeek _cronDayOfWeek;
-    private CronHour _cronHour;
-    private CronMinute _cronMinute;
-    private CronMonth _cronMonth;
+    private readonly CronDayOfMonth _cronDayOfMonth;
+    private readonly CronDayOfWeek _cronDayOfWeek;
+    private readonly CronHour _cronHour;
+    private readonly CronMinute _cronMinute;
+    private readonly CronMonth _cronMonth;
 
     public CronExpression(string expression, ISpecificationFactory? specificationFactory = null)
         : this(expression, DateTime.Now, specificationFactory)
@@ -30,10 +29,11 @@ public class CronExpression
 
     public CronExpression(string expression, DateTime date, ISpecificationFactory? specificationFactory = null)
     {
-        Expression = Guard.AgainstNullOrEmptyString(expression, nameof(expression));
+        Expression = Guard.AgainstNullOrEmptyString(expression);
 
         _cronDate = Truncate(date);
-        _specificationFactory = specificationFactory ?? new SpecificationFactory();
+
+        var factory = specificationFactory ?? new SpecificationFactory();
 
         var values = expression.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -41,20 +41,18 @@ public class CronExpression
 
         Guard.Against<CronException>(length != 5, string.Format(Resources.CronInvalidFieldCount, length));
 
-        _cronMinute = new(values[0], _specificationFactory);
-        _cronHour = new(values[1], _specificationFactory);
-        _cronDayOfMonth = new(values[2], _specificationFactory);
-        _cronMonth = new(values[3], _specificationFactory);
-        _cronDayOfWeek = new(values[4], _specificationFactory);
+        _cronMinute = new(values[0], factory);
+        _cronHour = new(values[1], factory);
+        _cronDayOfMonth = new(values[2], factory);
+        _cronMonth = new(values[3], factory);
+        _cronDayOfWeek = new(values[4], factory);
 
         Guard.Against<CronException>(_cronDayOfMonth.ExpressionType == ExpressionType.Skipped &&
-                                     _cronDayOfWeek.ExpressionType == ExpressionType.Skipped,
-            string.Format(Resources.CronNoDaysSpecified, expression));
+                                     _cronDayOfWeek.ExpressionType == ExpressionType.Skipped, string.Format(Resources.CronNoDaysSpecified, expression));
         Guard.Against<CronException>(_cronDayOfMonth.ExpressionType != ExpressionType.Skipped &&
                                      _cronDayOfMonth.ExpressionType != ExpressionType.All &&
                                      _cronDayOfWeek.ExpressionType != ExpressionType.Skipped &&
-                                     _cronDayOfWeek.ExpressionType != ExpressionType.All,
-            string.Format(Resources.CronBothDaysSpecified, expression));
+                                     _cronDayOfWeek.ExpressionType != ExpressionType.All, string.Format(Resources.CronBothDaysSpecified, expression));
     }
 
     public string Expression { get; }
