@@ -13,7 +13,7 @@
 		<repository type="git" url="https://github.com/Shuttle/Shuttle.Core.Cron.git" />
 		<projectUrl>https://github.com/Shuttle/Shuttle.Core.Cron</projectUrl>
 		<description>Cron expression parsing.</description>
-		<copyright>Copyright (c) 2024, Eben Roux</copyright>
+		<copyright>Copyright (c) 2025, Eben Roux</copyright>
 		<tags>cron scheduling</tags>
 		<dependencies>
       <dependency id="Shuttle.Core.Contract" version="20.0.0" />

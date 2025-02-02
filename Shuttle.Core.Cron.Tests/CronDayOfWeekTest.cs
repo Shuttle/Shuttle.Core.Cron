@@ -144,7 +144,7 @@ public class CronDayOfWeekTest
     [Test]
     public void Should_throw_exceptions_on_invalid_expressions()
     {
-        Assert.Throws<NullReferenceException>(() => _ = new CronDayOfWeek(""));
+        Assert.Throws<ArgumentNullException>(() => _ = new CronDayOfWeek(""));
         Assert.Throws<CronException>(() => _ = new CronDayOfWeek("invalid"));
         Assert.Throws<CronException>(() => _ = new CronDayOfWeek("10-60"));
         Assert.Throws<CronException>(() => _ = new CronDayOfWeek("60-60"));

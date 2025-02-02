@@ -90,7 +90,7 @@ public class CronHourTest
     [Test]
     public void Should_throw_exceptions_on_invalid_expressions()
     {
-        Assert.Throws<NullReferenceException>(() => _ = new CronHour(""));
+        Assert.Throws<ArgumentNullException>(() => _ = new CronHour(""));
         Assert.Throws<CronException>(() => _ = new CronHour("invalid"));
         Assert.Throws<CronException>(() => _ = new CronHour("10-60"));
         Assert.Throws<CronException>(() => _ = new CronHour("60-60"));
