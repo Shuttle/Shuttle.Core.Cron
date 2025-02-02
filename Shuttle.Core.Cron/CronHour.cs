@@ -1,32 +1,31 @@
 using System;
 
-namespace Shuttle.Core.Cron
+namespace Shuttle.Core.Cron;
+
+public class CronHour : CronField
 {
-	public class CronHour : CronField
-	{
-		public CronHour(string expression, ISpecificationFactory specificationFactory = null) : base(expression, specificationFactory)
-		{
-			DefaultParsing(FieldName.Hour, 0, 23);
-		}
+    public CronHour(string expression, ISpecificationFactory? specificationFactory = null) : base(expression, specificationFactory)
+    {
+        DefaultParsing(FieldName.Hour, 0, 23);
+    }
 
-		public override DateTime GetNext(DateTime date)
-		{
-			while (!IsSatisfiedBy(new Candidate(FieldName.Hour, Expression, date)))
-			{
-				date = date.AddHours(1);
-			}
+    public override DateTime GetNext(DateTime date)
+    {
+        while (!IsSatisfiedBy(new(FieldName.Hour, Expression, date)))
+        {
+            date = date.AddHours(1);
+        }
 
-			return date;
-		}
+        return date;
+    }
 
-		public override DateTime GetPrevious(DateTime date)
-		{
-			while (!IsSatisfiedBy(new Candidate(FieldName.Hour, Expression, date)))
-			{
-				date = date.AddHours(-1);
-			}
+    public override DateTime GetPrevious(DateTime date)
+    {
+        while (!IsSatisfiedBy(new(FieldName.Hour, Expression, date)))
+        {
+            date = date.AddHours(-1);
+        }
 
-			return date;
-		}
-	}
+        return date;
+    }
 }

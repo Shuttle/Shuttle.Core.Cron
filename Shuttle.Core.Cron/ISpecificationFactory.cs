@@ -1,9 +1,8 @@
 ﻿using Shuttle.Core.Specification;
 
-namespace Shuttle.Core.Cron
+namespace Shuttle.Core.Cron;
+
+public interface ISpecificationFactory
 {
-    public interface ISpecificationFactory
-    {
-        ISpecification<CronField.Candidate> Create(SpecificationParameters parameters);
-    }
+    ISpecification<CronField.Candidate>? Create(SpecificationParameters parameters);
 }
