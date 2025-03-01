@@ -71,35 +71,35 @@ public class CronDayOfWeek : CronField
         DefaultParsing(FieldName.DayOfWeek, 1, 7);
     }
 
-    public override DateTime GetNext(DateTime date)
+    public override DateTimeOffset GetNext(DateTimeOffset dateTimeOffset)
     {
-        return Snap(date, 1);
+        return Snap(dateTimeOffset, 1);
     }
 
-    public override DateTime GetPrevious(DateTime date)
+    public override DateTimeOffset GetPrevious(DateTimeOffset dateTimeOffset)
     {
-        return Snap(date, -1);
+        return Snap(dateTimeOffset, -1);
     }
 
-    private DateTime Snap(DateTime date, int delta)
+    private DateTimeOffset Snap(DateTimeOffset dateTimeOffset, int delta)
     {
         switch (ExpressionType)
         {
             case ExpressionType.Skipped:
             {
-                return date;
+                return dateTimeOffset;
             }
             default:
             {
-                while (!IsSatisfiedBy(new(FieldName.DayOfWeek, Expression, date)))
+                while (!IsSatisfiedBy(new(FieldName.DayOfWeek, Expression, dateTimeOffset)))
                 {
-                    date = date.AddDays(delta);
+                    dateTimeOffset = dateTimeOffset.AddDays(delta);
                 }
 
                 break;
             }
         }
 
-        return date;
+        return dateTimeOffset;
     }
 }

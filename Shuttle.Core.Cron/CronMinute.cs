@@ -9,23 +9,23 @@ public class CronMinute : CronField
         DefaultParsing(FieldName.Minute, 0, 59);
     }
 
-    public override DateTime GetNext(DateTime date)
+    public override DateTimeOffset GetNext(DateTimeOffset dateTimeOffset)
     {
-        while (!IsSatisfiedBy(new(FieldName.Minute, Expression, date)))
+        while (!IsSatisfiedBy(new(FieldName.Minute, Expression, dateTimeOffset)))
         {
-            date = date.AddMinutes(1);
+            dateTimeOffset = dateTimeOffset.AddMinutes(1);
         }
 
-        return date;
+        return dateTimeOffset;
     }
 
-    public override DateTime GetPrevious(DateTime date)
+    public override DateTimeOffset GetPrevious(DateTimeOffset dateTimeOffset)
     {
-        while (!IsSatisfiedBy(new(FieldName.Minute, Expression, date)))
+        while (!IsSatisfiedBy(new(FieldName.Minute, Expression, dateTimeOffset)))
         {
-            date = date.AddMinutes(-1);
+            dateTimeOffset = dateTimeOffset.AddMinutes(-1);
         }
 
-        return date;
+        return dateTimeOffset;
     }
 }

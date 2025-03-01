@@ -50,59 +50,59 @@ public class CronDayOfMonth : CronField
         DefaultParsing(FieldName.DayOfMonth, 1, 31);
     }
 
-    public override DateTime GetNext(DateTime date)
+    public override DateTimeOffset GetNext(DateTimeOffset dateTimeOffset)
     {
-        return Snap(date, 1);
+        return Snap(dateTimeOffset, 1);
     }
 
-    public override DateTime GetPrevious(DateTime date)
+    public override DateTimeOffset GetPrevious(DateTimeOffset dateTimeOffset)
     {
-        return Snap(date, -1);
+        return Snap(dateTimeOffset, -1);
     }
 
-    private DateTime Snap(DateTime date, int delta)
+    private DateTimeOffset Snap(DateTimeOffset dateTimeOffset, int delta)
     {
         switch (ExpressionType)
         {
             case ExpressionType.Skipped:
             {
-                return date;
+                return dateTimeOffset;
             }
             case ExpressionType.NearestWeekDay:
             {
-                while (!IsSatisfiedBy(new(FieldName.DayOfMonth, Expression, date)))
+                while (!IsSatisfiedBy(new(FieldName.DayOfMonth, Expression, dateTimeOffset)))
                 {
-                    date = date.AddDays(delta);
+                    dateTimeOffset = dateTimeOffset.AddDays(delta);
                 }
 
-                switch (date.DayOfWeek)
+                switch (dateTimeOffset.DayOfWeek)
                 {
                     case DayOfWeek.Saturday:
                     {
-                        if (date.Day == 1)
+                        if (dateTimeOffset.Day == 1)
                         {
                             // 1st of month and since we don't cross months we'll move to the next Monday
-                            date = date.AddDays(2);
+                            dateTimeOffset = dateTimeOffset.AddDays(2);
                         }
                         else
                         {
                             // move to the previous Friday
-                            date = date.AddDays(-1);
+                            dateTimeOffset = dateTimeOffset.AddDays(-1);
                         }
 
                         break;
                     }
                     case DayOfWeek.Sunday:
                     {
-                        if (date.Day == DateTime.DaysInMonth(date.Year, date.Month))
+                        if (dateTimeOffset.Day == DateTime.DaysInMonth(dateTimeOffset.Year, dateTimeOffset.Month))
                         {
                             // last day of month and since we don't cross months we'll move to the previous Friday
-                            date = date.AddDays(-2);
+                            dateTimeOffset = dateTimeOffset.AddDays(-2);
                         }
                         else
                         {
                             // move to the next Monday
-                            date = date.AddDays(1);
+                            dateTimeOffset = dateTimeOffset.AddDays(1);
                         }
 
                         break;
@@ -113,15 +113,15 @@ public class CronDayOfMonth : CronField
             }
             default:
             {
-                while (!IsSatisfiedBy(new(FieldName.DayOfMonth, Expression, date)))
+                while (!IsSatisfiedBy(new(FieldName.DayOfMonth, Expression, dateTimeOffset)))
                 {
-                    date = date.AddDays(delta);
+                    dateTimeOffset = dateTimeOffset.AddDays(delta);
                 }
 
                 break;
             }
         }
 
-        return date;
+        return dateTimeOffset;
     }
 }

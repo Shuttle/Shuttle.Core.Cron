@@ -105,24 +105,24 @@ public abstract class CronField : ISpecification<CronField.Candidate>
         }
     }
 
-    public abstract DateTime GetNext(DateTime date);
-    public abstract DateTime GetPrevious(DateTime date);
+    public abstract DateTimeOffset GetNext(DateTimeOffset dateTimeOffset);
+    public abstract DateTimeOffset GetPrevious(DateTimeOffset dateTimeOffset);
 
     protected string[] SplitValue()
     {
-        return Expression.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+        return Expression.Split([','], StringSplitOptions.RemoveEmptyEntries);
     }
 
     public class Candidate
     {
-        public Candidate(FieldName fieldName, string expression, DateTime date)
+        public Candidate(FieldName fieldName, string expression, DateTimeOffset dateTimeOffset)
         {
             FieldName = Guard.AgainstUndefinedEnum<FieldName>(fieldName);
             Expression = Guard.AgainstNullOrEmptyString(expression);
-            Date = date;
+            DateTimeOffset = dateTimeOffset;
         }
 
-        public DateTime Date { get; }
+        public DateTimeOffset DateTimeOffset { get; }
         public string Expression { get; }
         public FieldName FieldName { get; }
     }
