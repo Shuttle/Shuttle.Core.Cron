@@ -11,7 +11,7 @@ public class CronHourTest
     {
         var field = new CronHour("*");
 
-        var date = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var date = new DateTime(2011, 01, 01, 0, 0, 0);
 
         for (var i = 0; i < 24; i++)
         {
@@ -26,7 +26,7 @@ public class CronHourTest
     {
         var field = new CronHour("5,10,15,20");
 
-        var control = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var control = new DateTime(2011, 01, 01, 0, 0, 0);
         var date = field.GetNext(control);
 
         Assert.That(control.AddHours(5), Is.EqualTo(date));
@@ -49,7 +49,7 @@ public class CronHourTest
     {
         var field = new CronHour("5-10");
 
-        var control = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var control = new DateTime(2011, 01, 01, 0, 0, 0);
         var date = field.GetNext(control);
 
         Assert.That(control.AddHours(5), Is.EqualTo(date));
@@ -75,7 +75,7 @@ public class CronHourTest
     {
         var field = new CronHour("5-10/5");
 
-        var control = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var control = new DateTime(2011, 01, 01, 0, 0, 0);
         var date = field.GetNext(control);
 
         Assert.That(control.AddHours(5), Is.EqualTo(date));

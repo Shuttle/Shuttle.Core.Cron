@@ -15,7 +15,7 @@ public enum FieldName
 public class CronExpression
 {
     private readonly long _minuteTicks = TimeSpan.FromMinutes(1).Ticks;
-    private DateTimeOffset _cronDateTimeOffset;
+    private DateTime _cronDate;
     private readonly CronDayOfMonth _cronDayOfMonth;
     private readonly CronDayOfWeek _cronDayOfWeek;
     private readonly CronHour _cronHour;
@@ -23,15 +23,15 @@ public class CronExpression
     private readonly CronMonth _cronMonth;
 
     public CronExpression(string expression, ISpecificationFactory? specificationFactory = null)
-        : this(expression, DateTimeOffset.UtcNow, specificationFactory)
+        : this(expression, DateTime.Now, specificationFactory)
     {
     }
 
-    public CronExpression(string expression, DateTimeOffset dateTimeOffset, ISpecificationFactory? specificationFactory = null)
+    public CronExpression(string expression, DateTime date, ISpecificationFactory? specificationFactory = null)
     {
         Expression = Guard.AgainstNullOrEmptyString(expression);
 
-        _cronDateTimeOffset = Truncate(dateTimeOffset);
+        _cronDate = Truncate(date);
 
         var factory = specificationFactory ?? new SpecificationFactory();
 
@@ -57,9 +57,9 @@ public class CronExpression
 
     public string Expression { get; }
 
-    public DateTimeOffset GetNextOccurrence(DateTimeOffset dateTimeOffset)
+    public DateTime GetNextOccurrence(DateTime date)
     {
-        var result = Truncate(dateTimeOffset);
+        var result = Truncate(date);
 
         result = _cronMinute.GetNext(result);
         result = _cronHour.GetNext(result);
@@ -70,9 +70,9 @@ public class CronExpression
         return result;
     }
 
-    public DateTimeOffset GetPreviousOccurrence(DateTimeOffset dateTimeOffset)
+    public DateTime GetPreviousOccurrence(DateTime date)
     {
-        var result = Truncate(dateTimeOffset);
+        var result = Truncate(date);
 
         result = _cronMinute.GetPrevious(result);
         result = _cronHour.GetPrevious(result);
@@ -83,48 +83,48 @@ public class CronExpression
         return result;
     }
 
-    public DateTimeOffset NextOccurrence()
+    public DateTime NextOccurrence()
     {
-        return NextOccurrence(_cronDateTimeOffset);
+        return NextOccurrence(_cronDate);
     }
 
-    public DateTimeOffset NextOccurrence(DateTimeOffset dateTimeOffset)
+    public DateTime NextOccurrence(DateTime date)
     {
-        _cronDateTimeOffset = GetNextOccurrence(Truncate(dateTimeOffset.AddMinutes(1)));
+        _cronDate = GetNextOccurrence(Truncate(date.AddMinutes(1)));
 
-        var validator = GetNextOccurrence(_cronDateTimeOffset);
+        var validator = GetNextOccurrence(_cronDate);
 
-        while (validator != _cronDateTimeOffset)
+        while (validator != _cronDate)
         {
-            _cronDateTimeOffset = validator;
-            validator = GetNextOccurrence(_cronDateTimeOffset);
+            _cronDate = validator;
+            validator = GetNextOccurrence(_cronDate);
         }
 
-        return _cronDateTimeOffset;
+        return _cronDate;
     }
 
-    public DateTimeOffset PreviousOccurrence()
+    public DateTime PreviousOccurrence()
     {
-        return PreviousOccurrence(_cronDateTimeOffset);
+        return PreviousOccurrence(_cronDate);
     }
 
-    public DateTimeOffset PreviousOccurrence(DateTimeOffset dateTimeOffset)
+    public DateTime PreviousOccurrence(DateTime date)
     {
-        _cronDateTimeOffset = GetPreviousOccurrence(Truncate(dateTimeOffset.AddMinutes(-1)));
+        _cronDate = GetPreviousOccurrence(Truncate(date.AddMinutes(-1)));
 
-        var validator = GetPreviousOccurrence(_cronDateTimeOffset);
+        var validator = GetPreviousOccurrence(_cronDate);
 
-        while (validator != _cronDateTimeOffset)
+        while (validator != _cronDate)
         {
-            _cronDateTimeOffset = validator;
-            validator = GetPreviousOccurrence(_cronDateTimeOffset);
+            _cronDate = validator;
+            validator = GetPreviousOccurrence(_cronDate);
         }
 
-        return _cronDateTimeOffset;
+        return _cronDate;
     }
 
-    private DateTimeOffset Truncate(DateTimeOffset dateTimeOffset)
+    private DateTime Truncate(DateTime dateTime)
     {
-        return dateTimeOffset.AddTicks(-(dateTimeOffset.Ticks % _minuteTicks));
+        return dateTime.AddTicks(-(dateTime.Ticks % _minuteTicks));
     }
 }

@@ -37,27 +37,27 @@ public class RangeSpecification : ISpecification<CronField.Candidate>
         {
             case FieldName.DayOfWeek:
             {
-                compare = (int)item.DateTimeOffset.DayOfWeek + 1;
+                compare = (int)item.Date.DayOfWeek + 1;
                 break;
             }
             case FieldName.DayOfMonth:
             {
-                compare = item.DateTimeOffset.Day;
+                compare = item.Date.Day;
                 break;
             }
             case FieldName.Month:
             {
-                compare = item.DateTimeOffset.Month;
+                compare = item.Date.Month;
                 break;
             }
             case FieldName.Hour:
             {
-                compare = item.DateTimeOffset.Hour;
+                compare = item.Date.Hour;
                 break;
             }
             case FieldName.Minute:
             {
-                compare = item.DateTimeOffset.Minute;
+                compare = item.Date.Minute;
                 break;
             }
             default:

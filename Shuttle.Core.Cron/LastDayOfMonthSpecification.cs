@@ -10,6 +10,6 @@ public class LastDayOfMonthSpecification : ISpecification<CronField.Candidate>
     {
         Guard.AgainstNull(item);
 
-        return item.DateTimeOffset.Day == DateTime.DaysInMonth(item.DateTimeOffset.Year, item.DateTimeOffset.Month);
+        return item.Date.Day == DateTime.DaysInMonth(item.Date.Year, item.Date.Month);
     }
 }

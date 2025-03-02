@@ -11,7 +11,7 @@ public class CronDayOfWeekTest
     {
         var field = new CronDayOfWeek("*");
 
-        var date = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var date = new DateTime(2011, 01, 01, 0, 0, 0);
 
         for (var i = 0; i < 8; i++)
         {
@@ -26,7 +26,7 @@ public class CronDayOfWeekTest
     {
         var field = new CronDayOfWeek("L");
 
-        var control = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var control = new DateTime(2011, 01, 01, 0, 0, 0);
         var date = field.GetNext(control);
 
         Assert.That(control, Is.EqualTo(date));
@@ -49,7 +49,7 @@ public class CronDayOfWeekTest
     {
         var field = new CronDayOfWeek("6#1");
 
-        var date = new DateTimeOffset(2011, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        var date = new DateTime(2011, 1, 1);
 
         Assert.That(field.GetNext(date), Is.EqualTo(date.AddDays(6)));
 
@@ -71,7 +71,7 @@ public class CronDayOfWeekTest
     {
         var field = new CronDayOfWeek("1,3,6");
 
-        var control = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var control = new DateTime(2011, 01, 01, 0, 0, 0);
         var date = field.GetNext(control);
 
         Assert.That(control.AddDays(1), Is.EqualTo(date));
@@ -97,7 +97,7 @@ public class CronDayOfWeekTest
     {
         var field = new CronDayOfWeek("2-4");
 
-        var control = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var control = new DateTime(2011, 01, 01, 0, 0, 0);
         var date = field.GetNext(control);
 
         Assert.That(control.AddDays(2), Is.EqualTo(date));
@@ -123,7 +123,7 @@ public class CronDayOfWeekTest
     {
         var field = new CronDayOfWeek("2/5");
 
-        var control = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var control = new DateTime(2011, 01, 01, 0, 0, 0);
         var date = field.GetNext(control);
 
         Assert.That(control, Is.EqualTo(date));

@@ -11,7 +11,7 @@ public class CronMonthTest
     {
         var field = new CronMonth("*");
 
-        var date = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var date = new DateTime(2011, 01, 01, 0, 0, 0);
 
         for (var i = 1; i < 13; i++)
         {
@@ -26,7 +26,7 @@ public class CronMonthTest
     {
         var field = new CronMonth("2,APR,May,8,oct");
 
-        var control = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var control = new DateTime(2011, 01, 01, 0, 0, 0);
         var date = field.GetNext(control);
 
         Assert.That(control.AddMonths(1), Is.EqualTo(date));
@@ -49,7 +49,7 @@ public class CronMonthTest
     {
         var field = new CronMonth("5-10");
 
-        var control = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var control = new DateTime(2011, 01, 01, 0, 0, 0);
         var date = field.GetNext(control);
 
         Assert.That(control.AddMonths(4), Is.EqualTo(date));
@@ -75,7 +75,7 @@ public class CronMonthTest
     {
         var field = new CronMonth("5-10/5");
 
-        var control = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var control = new DateTime(2011, 01, 01, 0, 0, 0);
         var date = field.GetNext(control);
 
         Assert.That(control.AddMonths(4), Is.EqualTo(date));

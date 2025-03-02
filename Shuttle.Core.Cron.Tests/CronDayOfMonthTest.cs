@@ -12,7 +12,7 @@ public class CronDayOfMonthTest
     {
         var field = new CronDayOfMonth("*");
 
-        var date = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var date = new DateTime(2011, 01, 01, 0, 0, 0);
 
         for (var i = 0; i < 32; i++)
         {
@@ -27,7 +27,7 @@ public class CronDayOfMonthTest
     {
         var field = new CronDayOfMonth("L");
 
-        var date = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var date = new DateTime(2011, 01, 01, 0, 0, 0);
 
         Assert.That(field.GetNext(date), Is.EqualTo(date.AddDays(30)));
     }
@@ -37,7 +37,7 @@ public class CronDayOfMonthTest
     {
         var field = new CronDayOfMonth("12W");
 
-        var date = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var date = new DateTime(2011, 01, 01, 0, 0, 0);
 
         Assert.That(field.GetNext(date), Is.EqualTo(date.AddDays(11)));
     }
@@ -47,7 +47,7 @@ public class CronDayOfMonthTest
     {
         var field = new CronDayOfMonth("15W");
 
-        var date = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var date = new DateTime(2011, 01, 01, 0, 0, 0);
 
         Assert.That(field.GetNext(date), Is.EqualTo(date.AddDays(13)));
     }
@@ -57,7 +57,7 @@ public class CronDayOfMonthTest
     {
         var field = new CronDayOfMonth("16W");
 
-        var date = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var date = new DateTime(2011, 01, 01, 0, 0, 0);
 
         Assert.That(field.GetNext(date), Is.EqualTo(date.AddDays(16)));
     }
@@ -67,7 +67,7 @@ public class CronDayOfMonthTest
     {
         var field = new CronDayOfMonth("1W");
 
-        var date = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var date = new DateTime(2011, 01, 01, 0, 0, 0);
 
         Assert.That(field.GetNext(date), Is.EqualTo(date.AddDays(2)));
     }
@@ -77,7 +77,7 @@ public class CronDayOfMonthTest
     {
         var field = new CronDayOfMonth("31W");
 
-        var date = new DateTimeOffset(2011, 07, 01, 0, 0, 0, TimeSpan.Zero);
+        var date = new DateTime(2011, 07, 01, 0, 0, 0);
 
         Assert.That(field.GetNext(date), Is.EqualTo(date.AddDays(28)));
     }
@@ -87,7 +87,7 @@ public class CronDayOfMonthTest
     {
         var field = new CronDayOfMonth("LW");
 
-        var date = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var date = new DateTime(2011, 01, 01, 0, 0, 0);
 
         Assert.That(field.GetNext(date), Is.EqualTo(date.AddDays(30)));
     }
@@ -97,7 +97,7 @@ public class CronDayOfMonthTest
     {
         var field = new CronDayOfMonth("5,10,15,20");
 
-        var control = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var control = new DateTime(2011, 01, 01, 0, 0, 0);
         var date = field.GetNext(control);
 
         Assert.That(date, Is.EqualTo(control.AddDays(4)));
@@ -120,7 +120,7 @@ public class CronDayOfMonthTest
     {
         var field = new CronDayOfMonth("5-10");
 
-        var control = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var control = new DateTime(2011, 01, 01, 0, 0, 0);
         var date = field.GetNext(control);
 
         Assert.That(date, Is.EqualTo(control.AddDays(4)));
@@ -146,7 +146,7 @@ public class CronDayOfMonthTest
     {
         var field = new CronDayOfMonth("5-10/5");
 
-        var control = new DateTimeOffset(2011, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var control = new DateTime(2011, 01, 01, 0, 0, 0);
         var date = field.GetNext(control);
 
         Assert.That(date, Is.EqualTo(control.AddDays(4)));
@@ -177,11 +177,11 @@ public class CronDayOfMonthTest
         {
             return !parameters.Expression.Equals("H", StringComparison.InvariantCultureIgnoreCase)
                 ? null
-                : new Specification<CronField.Candidate>(candidate => candidate.DateTimeOffset.Day % 2 == 0);
+                : new Specification<CronField.Candidate>(candidate => candidate.Date.Day % 2 == 0);
         });
 
         CronDayOfMonth field = null;
-        var control = new DateTimeOffset(DateTimeOffset.Now.Year, 01, 01, 0, 0, 0, TimeSpan.Zero);
+        var control = new DateTime(DateTime.Now.Year, 01, 01);
         var date = control.AddDays(-1);
 
         Assert.That(() => new CronDayOfMonth("I", factory), Throws.TypeOf<CronException>());

@@ -68,23 +68,23 @@ public class CronMonth : CronField
         DefaultParsing(FieldName.Month, 1, 12);
     }
 
-    public override DateTimeOffset GetNext(DateTimeOffset dateTimeOffset)
+    public override DateTime GetNext(DateTime date)
     {
-        while (!IsSatisfiedBy(new(FieldName.Month, Expression, dateTimeOffset)))
+        while (!IsSatisfiedBy(new(FieldName.Month, Expression, date)))
         {
-            dateTimeOffset = dateTimeOffset.AddMonths(1);
+            date = date.AddMonths(1);
         }
 
-        return dateTimeOffset;
+        return date;
     }
 
-    public override DateTimeOffset GetPrevious(DateTimeOffset dateTimeOffset)
+    public override DateTime GetPrevious(DateTime date)
     {
-        while (!IsSatisfiedBy(new(FieldName.Month, Expression, dateTimeOffset)))
+        while (!IsSatisfiedBy(new(FieldName.Month, Expression, date)))
         {
-            dateTimeOffset = dateTimeOffset.AddMonths(-1);
+            date = date.AddMonths(-1);
         }
 
-        return dateTimeOffset;
+        return date;
     }
 }
